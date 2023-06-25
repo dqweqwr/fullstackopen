@@ -1,31 +1,42 @@
-const Hello = (props) => {
-  console.log(props);
-  return (
-    <div>
-      <p>Hello {props.name}! You are {props.age} years old!</p>
-    </div>
-  )
-}
+import { useState } from "react"
+
+const Display = ({ counter }) => <div>{counter}</div>
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const App = () => {
-  const name = "Peter"
-  const age = "10"
-  // console.log("Hello from component");
-  // const now = new Date()
-  // const a = 10
-  // const b = 20
-  // console.log(now, a + b);
-  return (
-    // <div>
-    //   <p>Hello world!, it is {now.toString()}</p>
-    //   <p>{a} + {b} is {a + b}</p>
-    // </div>
+  const [ counter, setCounter ] = useState(0)
+  console.log("rendering with counter value", counter);
+
+  const increaseByOne = () => {
+    console.log("increasing. value before", counter)
+    setCounter(counter + 1)
+  }
+  const decreaseByOne = () => {
+    console.log("decreasing. value before", counter);
+    setCounter(counter - 1)
+  }
+  const setToZero = () => {
+    console.log("resetting to zero. value before", counter);
+    setCounter(0)
+  }
+
+  return(
     <div>
-      <h1>Greetings!</h1>
-      <Hello name={name} age={age} />
-      <Hello name="Daisy" age={26 + 10} />
+      <Display counter={counter} />
+      <Button
+        handleClick={setToZero}
+        text="zero"
+      />
+      <Button
+        handleClick={increaseByOne}
+        text="plus"
+      />
+      <Button
+        handleClick={decreaseByOne}
+        text="minus"
+      />
     </div>
-  );
+  )
 }
 
 export default App;
