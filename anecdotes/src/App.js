@@ -1,5 +1,41 @@
 import { useState } from "react";
 
+const SelectedAnecdoteDisplay = ({ selectedAnecdote, numVotes }) => {
+  return (
+    <div>
+      <h1>Anecdote of the day</h1>
+      <p>{selectedAnecdote}</p>
+      <p>has {numVotes} votes</p>
+    </div>
+  )
+}
+
+const MostVotedDisplay = ({ mostVotedAnecdote, numVotes }) => {
+  if (typeof mostVotedAnecdote === "undefined") {
+    return (
+      <div>
+        <h1>Anecdote with the most votes</h1>
+        <p>no votes have been put in yet</p>
+      </div>
+    )
+  }
+  return (
+    <div>
+      <h1>Anecdote with the most votes</h1>
+      <p>{mostVotedAnecdote}</p>
+      <p>has {numVotes} votes</p>
+    </div>
+  )
+}
+
+const Button = ({ handleClick, text }) => {
+  return (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  )
+}
+
 function App() {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -13,11 +49,14 @@ function App() {
   ]
 
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes]= useState(new Array(anecdotes.length).fill(0))
-  const [mostvoted, setMostVoted] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  const [mostVoted, setMostVoted] = useState(-1)
 
   const handleNextClick = () => {
-    const randnum = Math.floor(Math.random() * anecdotes.length)
+    let randnum = selected
+    while (randnum === selected) {
+      randnum = Math.floor(Math.random() * anecdotes.length)
+    }
     setSelected(randnum)
   }
 
@@ -25,26 +64,22 @@ function App() {
     let copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
-  }
-
-  const displayMostVoted = () => {
-    for (let i = 0; i < anecdotes.length - 1; i++) {
-      if (votes[i] > mostvoted) {
-        setMostVoted(i)
-      }
-    }
-    return anecdotes[mostvoted]
+    const updatedMostVoted = copy.indexOf(Math.max(...copy))
+    setMostVoted(updatedMostVoted)
   }
 
   return (
     <div>
-      <h1>Anecdote of the day</h1>
-      <p>{anecdotes[selected]}</p>
-      <p>has {votes[selected]} votes</p>
-      <button onClick={handleNextClick}>next anecdote</button>
-      <button onClick={handleVoteClick}>vote</button>
-      <h1>Anecdote with the most votes</h1>
-      <p>{displayMostVoted()}</p>
+      <SelectedAnecdoteDisplay
+        selectedAnecdote={anecdotes[selected]}
+        numVotes={votes[selected]}
+      />
+      <Button handleClick={handleNextClick} text={"next anecdote"} />
+      <Button handleClick={handleVoteClick} text={"vote"} />
+      <MostVotedDisplay
+        mostVotedAnecdote={anecdotes[mostVoted]}
+        numVotes={votes[mostVoted]}
+      />
     </div>
   );
 }
