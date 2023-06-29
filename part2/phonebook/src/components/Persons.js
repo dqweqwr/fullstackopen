@@ -1,27 +1,29 @@
-const Persons = ({ persons, filter }) => {
-  if (filter === "") {
-    return (
-      persons.map(person => {
-        return (
-          <div key={person.id}>
-            {person.name} {person.number}
-          </div>
-        )
-      })
-    )
+const Person = ({ name, number, destroyPerson }) => {
+  return (
+    <div>
+      {name} {number}
+      <button onClick={destroyPerson}>delete</button>
+    </div>
+  )
+}
+
+const Persons = ({ persons, filter, destroyPerson }) => {
+  if (filter !== "") {
+    const filterRegex = new RegExp(filter, "i")
+    persons = persons.filter(person => {
+      return person.name.match(filterRegex)
+    })
   }
 
-  const filterRegex = new RegExp(filter, "i")
-  const filteredPersons = persons.filter(person => {
-    return person.name.match(filterRegex)
-  })
-
   return (
-    filteredPersons.map(person => {
+    persons.map(person => {
       return (
-        <div key={person.id}>
-          {person.name} {person.number}
-        </div>
+        <Person 
+          key={person.id}
+          name={person.name} 
+          number={person.number}
+          destroyPerson={() => destroyPerson(person.id)}
+        />
       )
     })
   )

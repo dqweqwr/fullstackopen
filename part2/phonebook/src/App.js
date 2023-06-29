@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
+import noteService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,10 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState("")
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
+    noteService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -45,16 +45,32 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
     }
 
     if (checkDuplicates(personObject)) {
       alert(`${newName} is already added to the phonebook`)
       return
     }
-    setPersons(persons.concat(personObject))
-    setNewName("")
-    setNewNumber("")
+
+    noteService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName("")
+        setNewNumber("")
+      })
+  }
+
+  const destroyPerson = id => {
+    const confirmation = window.confirm("Are you sure?")
+    if (confirmation) {
+      noteService
+        .destroy(id)
+        .catch(error => {
+          alert("User does not exist")
+        })
+      setPersons(persons.filter(p => p.id !== id))
+    }
   }
 
   return (
@@ -73,7 +89,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter}/>
+      <Persons 
+        persons={persons}
+        filter={filter}
+        destroyPerson={destroyPerson}
+      />
     </div>
   );
 }
