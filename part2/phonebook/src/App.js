@@ -48,7 +48,7 @@ const App = () => {
     }
 
     if (checkDuplicates(personObject)) {
-      alert(`${newName} is already added to the phonebook`)
+      replaceNumber(personObject)
       return
     }
 
@@ -59,6 +59,27 @@ const App = () => {
         setNewName("")
         setNewNumber("")
       })
+  }
+
+  const replaceNumber = (changedPerson) => {
+    const confirmation = window.confirm(`${changedPerson.name} is already added into the phonebook, replace the old number with a new one?`)
+    if (confirmation) {
+      const person = persons.find(p => p.name === changedPerson.name)
+      noteService
+        .update(person.id, changedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(p => 
+            p.name === changedPerson.name 
+              ? returnedPerson
+              : p
+          ))
+        })
+        .catch(error => {
+          alert(`${person.name} does not exist`)
+          setPersons(persons.filter(p => p.id !== person.id))
+        })
+      return
+    }
   }
 
   const destroyPerson = id => {
