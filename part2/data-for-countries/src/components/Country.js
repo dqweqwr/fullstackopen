@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import noteService from "../services/countries"
+import Weather from "./Weather"
 
 const Country = ({ name }) => {
   const [country, setCountry] = useState(null)
 
   useEffect(() => {
-    console.log("running effect")
     if (name) {
-      console.log(`fetching data for country "${name}"`)
       noteService
         .getOne(name)
         .then(countryInfo => {
@@ -35,6 +34,7 @@ const Country = ({ name }) => {
         })}
       </ul>
       <img src={country.flags.png} alt={country.flags.alt} />
+      <Weather city={country.capital}/>
     </>
   )
 }
