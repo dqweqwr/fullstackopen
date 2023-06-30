@@ -1,43 +1,17 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-
-const Country = ({ name }) => {
-  const [country, setCountry] = useState(null)
-  useEffect(() => {
-    axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
-      .then(response => {
-        setCountry(response.data)
-      })
-  }, [name])
-
-  if (!country) return null
-    
-  return (
-    <>
-      <h1>{country.name.common}</h1>
-      <p>{country.capital}</p>
-      <p>area {country.area}</p>
-      <h2>languages</h2>
-      <ul>
-        {Object.values(country.languages).map(language => {
-          return (
-            <li key={language}>{language}</li>
-          )
-        })}
-      </ul>
-      <p>insert country flag here</p>
-      <img src={country.flags.png} alt="flag of country" />
-    </>
-  )
-}
+import { useState } from "react"
+import Country from "./Country"
 
 const Countries = ({ countries, filter }) => {
+  const [selectedCountry, setSelectedCountry] = useState(null)
   if (filter !== "") {
     const filterRegex = new RegExp(filter, "i")
     countries = countries.filter(country => {
       return country.match(filterRegex)
     })
+  }
+
+  const handleClick = (country) => {
+    setSelectedCountry(country)
   }
 
   if (filter === "") {
@@ -52,13 +26,19 @@ const Countries = ({ countries, filter }) => {
     )
   } else if (countries.length === 0) {
     return <div>No matches found</div>
-  }
-
-  return (
+  } else return (
     <div>
-      {countries.sort().map((country, index) => {
-        return <div key={index}>{country}</div>
+      {countries.sort().map(country => {
+        return (
+          <div key={country}>
+            {country}
+            <button onClick={() => handleClick(country)}>
+              show
+            </button>
+          </div>
+        )
       })}
+      <Country name={selectedCountry} />
     </div>
   )
 }

@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import axios from "axios"
 import SearchBar from "./components/SearchBar";
 import Countries from "./components/Countries";
+import noteService from "./services/countries";
 
 const App = () => {
   const [filter, setFilter] = useState("")
   const [countries, setCountries] = useState(null)
 
   useEffect(() => {
-    axios
-      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-      .then(response => response.data)
+    noteService
+      .getAll()
       .then(responseData => {
         const countryNames = responseData.map(country => {
           return country.name.common
