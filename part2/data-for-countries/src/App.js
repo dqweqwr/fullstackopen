@@ -1,48 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios"
-
-const SearchBar = ({ filter, handleFilterChange }) => {
-  return (
-    <div>
-      <label htmlFor="searchbar">
-        Find countries: 
-      </label>
-      <input
-        id="searchbar"
-        type="text"
-        value={filter}
-        onChange={handleFilterChange}
-      />
-    </div>
-  )
-}
-
-const CountryView = ({ countries, filter }) => {
-  if (filter !== "") {
-    const filterRegex = new RegExp(filter, "i")
-    countries = countries.filter(country => {
-      return country.match(filterRegex)
-    })
-  }
-
-  if (filter === "") {
-    return <div></div>
-  } else if (countries.length > 10) {
-    return <div>Too many matches. Please specify another filter</div>
-  } else if (countries.length === 1) {
-    return <div>One match: {countries[0]}</div>
-  } else if (countries.length === 0) {
-    return <div>No matches found</div>
-  }
-
-  return (
-    <div>
-      {countries.sort().map((country, index) => {
-        return <div key={index}>{country}</div>
-      })}
-    </div>
-  )
-}
+import SearchBar from "./components/SearchBar";
+import Countries from "./components/Countries";
 
 const App = () => {
   const [filter, setFilter] = useState("")
@@ -57,7 +16,6 @@ const App = () => {
           return country.name.common
         })
         setCountries(countryNames)
-        console.log(countryNames)
       })
   }, [])
 
@@ -68,13 +26,13 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <SearchBar
         filter={filter}
         handleFilterChange={handleFilterChange}
       />
-      <CountryView countries={countries} filter={filter} />
-    </div>
+      <Countries countries={countries} filter={filter} />
+    </>
   );
 }
 
