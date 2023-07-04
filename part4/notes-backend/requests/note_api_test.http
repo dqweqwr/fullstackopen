@@ -1,0 +1,42 @@
+GET http://localhost:3001/api/notes
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
+{
+  "content": "sent from .rest file",
+  "important": false
+}
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
+{
+  "content": "lol",
+  "important": false
+}
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
+{}
+
+###
+
+DELETE http://localhost:3001/api/notes/64a487608e0461b913ddcd0a
+
+###
+
+PUT http://localhost:3001/api/notes/64a344a0b2602dd3c8438413
+content-type: application/json
+
+{
+  "content": "Updated note",
+  "important": true
+}
