@@ -3,7 +3,7 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import Notification from "./components/Notification";
-import noteService from "./services/persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,7 +13,7 @@ const App = () => {
   const [message, setMessage] = useState("")
 
   useEffect(() => {
-    noteService
+    personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
@@ -66,7 +66,7 @@ const App = () => {
       return
     }
 
-    noteService
+    personService
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
@@ -74,13 +74,20 @@ const App = () => {
         setNewName("")
         setNewNumber("")
       })
+      .catch(err => {
+        const failureMessage = {
+          type: "failure",
+          body: err.response.data.error
+        }
+        showNotification(failureMessage)
+      })
   }
 
   const replaceNumber = (changedPerson) => {
     const confirmation = window.confirm(`${changedPerson.name} is already added into the phonebook, replace the old number with a new one?`)
     if (confirmation) {
       const person = persons.find(p => p.name === changedPerson.name)
-      noteService
+      personService
         .update(person.id, changedPerson)
         .then(returnedPerson => {
           setPersons(persons.map(p => 
@@ -89,13 +96,12 @@ const App = () => {
               : p
           ))
         })
-        .catch(error => {
+        .catch(err => {
           const failureMessage = {
             type: "failure",
-            body:`${person.name} does not exist` 
+            body: err.response.data.error
           }
           showNotification(failureMessage)
-          setPersons(persons.filter(p => p.id !== person.id))
         })
       return
     }
@@ -104,7 +110,7 @@ const App = () => {
   const destroyPerson = id => {
     const confirmation = window.confirm("Are you sure?")
     if (confirmation) {
-      noteService
+      personService
         .destroy(id)
         .catch(error => {
           const failureMessage = {

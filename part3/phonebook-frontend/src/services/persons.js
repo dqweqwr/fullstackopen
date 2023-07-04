@@ -3,7 +3,8 @@ const baseUrl = "/api/persons"
 
 const create = newObject => {
   const request = axios.post(baseUrl, newObject)
-  return request.then(response => response.data)
+  return request
+    .then(response => response.data)
 }
 
 const getAll = () => {
@@ -20,5 +21,5 @@ const destroy = id => {
   return axios.delete(`${baseUrl}/${id}`)
 }
 
-const noteService = { create, getAll, update, destroy }
-export default noteService
+const personService = { create, getAll, update, destroy }
+export default personService 
