@@ -16,3 +16,17 @@ POST http://localhost:3001/api/notes
 content-type: application/json
 
 {}
+
+###
+
+DELETE http://localhost:3001/api/notes/64a0b2fddf0600e4b5478eff
+
+###
+
+PUT http://localhost:3001/api/notes/64a344a0b2602dd3c8438413
+content-type: application/json
+
+{
+  "content": "Updated note",
+  "important": true
+}
