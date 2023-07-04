@@ -15,6 +15,16 @@ content-type: application/json
 POST http://localhost:3001/api/notes
 content-type: application/json
 
+{
+  "content": "lol",
+  "important": false
+}
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
 {}
 
 ###
