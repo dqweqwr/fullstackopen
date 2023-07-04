@@ -19,24 +19,6 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger)
 
-let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
-
 // index
 app.get("/", (request, response) => {
   response.send(
@@ -87,13 +69,8 @@ app.get("/api/notes/:id", (request, response, next) => {
 app.put("/api/notes/:id", (request, response, next) => {
   const { content, important } = request.body
 
-  const note = {
-    content: body.content,
-    important: body.important,
-  }
-
   Note.findByIdAndUpdate(
-    request.params.id, 
+    request.params.id,
     { content, important },
     { new: true, runValidators: true, context: "query" }
   )
@@ -106,7 +83,7 @@ app.put("/api/notes/:id", (request, response, next) => {
 // delete
 app.delete("/api/notes/:id", (request, response, next) => {
   Note.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
