@@ -6,8 +6,9 @@ POST http://localhost:3001/api/notes
 content-type: application/json
 
 {
-  "content": "sent from .rest file",
-  "important": false
+  "content": "another note sent with user id",
+  "important": false,
+  "userId": "64a7493e0a57dc09b09ae402"
 }
 
 ###
