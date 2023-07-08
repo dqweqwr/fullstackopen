@@ -1,0 +1,45 @@
+###
+
+GET http://localhost:3001/api/notes
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFhcm9uMSIsImlkIjoiNjRhNzQ5M2UwYTU3ZGMwOWIwOWFlNDAyIiwiaWF0IjoxNjg4Njg4OTQwfQ.mvxASrehBj3hDw_f1pXB2_C7WvzG0GEYaEG6RTh2Rfw
+
+{
+  "content": "another note sent with user id",
+  "important": false
+}
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
+{
+  "content": "lol",
+  "important": false
+}
+
+###
+
+POST http://localhost:3001/api/notes
+content-type: application/json
+
+{}
+
+###
+
+DELETE http://localhost:3001/api/notes/64a487608e0461b913ddcd0a
+
+###
+
+PUT http://localhost:3001/api/notes/64a344a0b2602dd3c8438413
+content-type: application/json
+
+{
+  "content": "Updated note",
+  "important": true
+}
