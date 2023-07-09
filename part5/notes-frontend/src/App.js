@@ -24,6 +24,15 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
+
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
@@ -48,7 +57,7 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.map(n => n.id !== id ? n : returnedNote))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `Note '${note.content}' was already removed from the server`
         )
@@ -75,6 +84,11 @@ const App = () => {
         username,
         password
       })
+
+      window.localStorage.setItem(
+        "loggedNoteappUser", JSON.stringify(user)
+      )
+      noteService.setToken(user.token)
       setUser(user)
       setUsername("")
       setPassword("")
@@ -94,6 +108,12 @@ const App = () => {
     setPassword(event.target.value)
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("loggedNoteappUser")
+    setUser(null)
+    noteService.setToken(null)
+  }
+
   return (
     <div>
       <h1>Notes</h1>
@@ -111,7 +131,10 @@ const App = () => {
 
       {user && 
         <div>
-          <p>{user.name} logged in</p>
+          <p>
+            {user.name} logged in
+            <button onClick={handleLogout}>Log out</button>
+          </p>
           <NoteForm
             addNote={addNote}
             newNote={newNote}
