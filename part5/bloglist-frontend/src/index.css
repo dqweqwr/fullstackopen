@@ -3,3 +3,11 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.error {
+  color: #e01c24;
+}
+
+.success {
+  color: #00bf00;
+}
