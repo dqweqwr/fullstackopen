@@ -10,13 +10,9 @@ import Togglable from "./components/Togglable";
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     noteService
@@ -35,18 +31,11 @@ const App = () => {
     }
   }, [])
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: false,
-    }
-
+  const addNote = (noteObject) => {
     noteService
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setNewNote("")
       })
   }
 
@@ -74,9 +63,7 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important)
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
         username,
@@ -88,8 +75,6 @@ const App = () => {
       )
       noteService.setToken(user.token)
       setUser(user)
-      setUsername("")
-      setPassword("")
     } catch (e) {
       setErrorMessage("Wrong credentials")
       setTimeout(() => {
@@ -111,13 +96,7 @@ const App = () => {
 
       {!user && 
         <Togglable buttonLabel="login">
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            password={password}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-          />
+          <LoginForm handleLogin={handleLogin} />
         </Togglable>
       }
 
@@ -128,11 +107,7 @@ const App = () => {
             <button onClick={handleLogout}>Log out</button>
           </p>
           <Togglable buttonLabel="new note">
-            <NoteForm
-              addNote={addNote}
-              newNote={newNote}
-              handleNoteChange={({ target }) => setNewNote(target.value)}
-            />
+            <NoteForm createNote={addNote} />
           </Togglable>
         </div>
       }
