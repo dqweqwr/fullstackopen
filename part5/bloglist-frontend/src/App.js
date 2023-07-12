@@ -11,6 +11,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [sortByLikes, setSortByLikes] = useState(true)
 
   const blogFormRef = useRef()
 
@@ -56,7 +57,7 @@ const App = () => {
         type: "success",
         value: `Logged in as ${user.username}`
       })
-    } catch(e) {
+    } catch (e) {
       showNotification({
         type: "error",
         value: "Invalid username or password"
@@ -70,14 +71,14 @@ const App = () => {
     setUser(null)
     blogService.setToken(null)
   }
-  
+
   const createBlog = async (newBlog) => {
     try {
       const blog = await blogService.create(newBlog)
       setBlogs(blogs.concat(blog))
       showNotification({
         type: "success",
-        value: `A new blog '${newBlog.title}' by ${newBlog.author} created`
+        value: `A new blog "${newBlog.title}" by ${newBlog.author} created`
       })
       blogFormRef.current.toggleVisibility()
     } catch (e) {
@@ -111,7 +112,7 @@ const App = () => {
 
       showNotification({
         type: "success",
-        value: "Blog liked"
+        value: `"${returnedBlog.title}" by ${returnedBlog.author} liked`
       })
     } catch (e) {
       showNotification({
@@ -124,12 +125,12 @@ const App = () => {
   return (
     <div>
       <Notification message={message} />
-      {!user && 
+      {!user &&
         <>
-        <LoginForm handleLogin={handleLogin} />
-        <div>
-          User must be logged in to see blog list
-        </div>
+          <LoginForm handleLogin={handleLogin} />
+          <div>
+            User must be logged in to see blog list
+          </div>
         </>
       }
       {user &&
@@ -145,13 +146,36 @@ const App = () => {
           <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
-          {blogs.map(blog => {
-            return <Blog
-              key={blog.id}
-              blog={blog}
-              updateLikes={updateLikes}
-            />
-          })}
+          <br />
+          <div>
+            Sorted by:
+            {" "}
+            <button onClick={() => setSortByLikes(!sortByLikes)}>
+              {sortByLikes ? "most liked" : "oldest"}
+            </button>
+            {" "}
+            on top
+          </div>
+          {sortByLikes &&
+            [...blogs].sort((a, b) => {
+              return b.likes - a.likes
+            }).map(blog => {
+              return <Blog
+                key={blog.id}
+                blog={blog}
+                updateLikes={updateLikes}
+              />
+            })
+          }
+          {!sortByLikes &&
+            blogs.map(blog => {
+              return <Blog
+                key={blog.id}
+                blog={blog}
+                updateLikes={updateLikes}
+              />
+            })
+          }
         </>
       }
     </div>

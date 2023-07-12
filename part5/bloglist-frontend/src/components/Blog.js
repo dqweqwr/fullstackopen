@@ -16,7 +16,7 @@ const Blog = ({ blog, updateLikes }) => {
         {" "}
         <button onClick={toggleShowDetails}>{showDetails ? "hide" : "view"}</button>
       </div>  
-      {showDetails &&
+      {true &&
         <>
           <div>url: {blog.url}</div>
           <div>
