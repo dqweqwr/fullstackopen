@@ -8,7 +8,7 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <>
+    <div className="blog-listing">
       <div>
         title: {blog.title}
         {" "}
@@ -27,7 +27,7 @@ const Blog = ({ blog }) => {
           <div>Posted by: {blog.user.username}</div>
         </>
       }
-    </>
+    </div>
   )
 }
 
