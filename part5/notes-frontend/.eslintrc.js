@@ -32,10 +32,6 @@ module.exports = {
           "error",
           "double"
       ],
-      "semi": [
-          "error",
-          "never"
-      ],
       "eqeqeq": "error",
       "no-trailing-spaces": "error",
       "object-curly-spacing": [
@@ -43,6 +39,9 @@ module.exports = {
       ],
       "arrow-spacing": [
           "error", { "before": true, "after": true }
+      ],
+      "no-unused-vars": [
+          "off"
       ],
       "no-console": 0,
       "react/prop-types": 0,
