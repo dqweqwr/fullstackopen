@@ -3,18 +3,14 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState("")
-  const [url, setUrl] = useState("")
-  const [author, setAuthor] = useState("")
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -38,20 +34,12 @@ const App = () => {
     }, 4000)
   }
 
-  const handleUsernameChange = event => {
-    setUsername(event.target.value)
-  }
-
-  const handlePasswordChange = event => {
-    setPassword(event.target.value)
-  }
-
-  const handleLogin = async event => {
-    event.preventDefault()
+  const handleLogin = async (username, password)=> {
     const credentials = {
       username,
       password
     }
+
     try {
       const user = await loginService
         .login(credentials)
@@ -60,8 +48,6 @@ const App = () => {
         "loggedBlogListUser", JSON.stringify(user)
       )
       setUser(user)
-      setUsername("")
-      setPassword("")
       blogService.setToken(user.token)
 
       showNotification({
@@ -73,6 +59,7 @@ const App = () => {
         type: "error",
         value: "Invalid username or password"
       })
+      throw Error
     }
   }
 
@@ -81,38 +68,18 @@ const App = () => {
     setUser(null)
     blogService.setToken(null)
   }
-
-  const handleTitleChange = event => {
-    setTitle(event.target.value)
-  }
-
-  const handleUrlChange = event => {
-    setUrl(event.target.value)
-  }
-
-  const handleAuthorChange = event => {
-    setAuthor(event.target.value)
-  }
   
-  const addBlog = async (event) => {
-    event.preventDefault()
-
+  const createBlog = async (newBlog) => {
     try {
-      const newBlog = {
-        title, url, author
-      }
-
       const blog = await blogService.create(newBlog)
       setBlogs(blogs.concat(blog))
-      setTitle("")
-      setUrl("")
-      setAuthor("")
       showNotification({
         type: "success",
-        value: `A new blog '${title}' by ${author} created`
+        value: `A new blog '${newBlog.title}' by ${newBlog.author} created`
       })
     } catch (e) {
       const error = e.response.data.error
+
       showNotification({
         type: "error",
         value: error
@@ -125,13 +92,7 @@ const App = () => {
       <Notification message={message} />
       {!user && 
         <>
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          handleUsernameChange={handleUsernameChange}
-          password={password}
-          handlePasswordChange={handlePasswordChange}
-        />
+        <LoginForm handleLogin={handleLogin} />
         <div>
           User must be logged in to see blog list
         </div>
@@ -139,25 +100,19 @@ const App = () => {
       }
       {user &&
         <>
-        <h1>Blogs</h1>
-        <div>
-          Welcome back {user.name}!
-          <button onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
-        <BlogForm
-          title={title}
-          handleTitleChange={handleTitleChange}
-          url={url}
-          handleUrlChange={handleUrlChange}
-          author={author}
-          handleAuthorChange={handleAuthorChange}
-          addBlog={addBlog}
-        />
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+          <h1>Blogs</h1>
+          <div>
+            Welcome back {user.name}!
+            <button onClick={handleLogout}>
+              Log out
+            </button>
+          </div>
+          <Togglable buttonLabel="Add new blog">
+            <BlogForm createBlog={createBlog} />
+          </Togglable>
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
         </>
       }
     </div>

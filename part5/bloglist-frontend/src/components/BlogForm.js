@@ -1,17 +1,27 @@
-const BlogForm = (props) => {
-  const {
-    title,
-    handleTitleChange,
-    url,
-    handleUrlChange,
-    author,
-    handleAuthorChange,
-    addBlog
-  } = props
+import { useState } from "react"
+
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setUrl] = useState("")
+
+  const addBlog = (e) => {
+    e.preventDefault()
+
+    const newBlog = {
+      title, url, author
+    }
+    
+    createBlog(newBlog)
+
+    setTitle("")
+    setAuthor("")
+    setUrl("")
+  }
 
   return (
     <>
-      <h1>Create new blog listing</h1>
+      <h2>Create new blog listing</h2>
       <form onSubmit={addBlog}>
         <div>
           <label htmlFor="title">Title: </label>
@@ -20,7 +30,7 @@ const BlogForm = (props) => {
             id="title"
             name="title"
             value={title}
-            onChange={handleTitleChange}
+            onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
@@ -30,7 +40,7 @@ const BlogForm = (props) => {
             id="url"
             name="url"
             value={url}
-            onChange={handleUrlChange}
+            onChange={({ target }) => setUrl(target.value)}
           />
         </div>
         <div>
@@ -40,11 +50,11 @@ const BlogForm = (props) => {
             id="author"
             name="author"
             value={author}
-            onChange={handleAuthorChange}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
-          <button onClick={addBlog}>Create</button>
+          <button type="submit">Create</button>
         </div>
       </form>
     </>
