@@ -25,6 +25,6 @@ const NoteForm = ({ createNote }) => {
       </form>
     </div>
   )
-} 
+}
 
 export default NoteForm

@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import Footer from "./components/footer";
+import { useState, useEffect, useRef } from "react"
+import Footer from "./components/footer"
 import Note from "./components/Note"
-import Notification from "./components/Notification";
-import LoginForm from "./components/LoginForm";
-import NoteForm from "./components/NoteForm";
-import noteService from "./services/notes";
-import loginService from "./services/login";
-import Togglable from "./components/Togglable";
+import Notification from "./components/Notification"
+import LoginForm from "./components/LoginForm"
+import NoteForm from "./components/NoteForm"
+import noteService from "./services/notes"
+import loginService from "./services/login"
+import Togglable from "./components/Togglable"
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -97,13 +97,13 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {!user && 
+      {!user &&
         <Togglable buttonLabel="login">
           <LoginForm handleLogin={handleLogin} />
         </Togglable>
       }
 
-      {user && 
+      {user &&
         <div>
           <p>
             {user.name} logged in
@@ -122,8 +122,8 @@ const App = () => {
       </div>
 
       <ul>
-        {notesToShow.map(note => 
-          <Note 
+        {notesToShow.map(note =>
+          <Note
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
@@ -133,7 +133,7 @@ const App = () => {
 
       <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
