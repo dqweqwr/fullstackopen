@@ -102,7 +102,8 @@ const App = () => {
         <>
           <h1>Blogs</h1>
           <div>
-            Welcome back {user.name}!
+            Welcome back {user.username}!
+            {" "}
             <button onClick={handleLogout}>
               Log out
             </button>
