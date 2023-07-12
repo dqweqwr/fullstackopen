@@ -1,10 +1,17 @@
 import { useState } from "react"
 
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, updateLikes, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const toggleShowDetails = () => {
     setShowDetails(!showDetails)
+  }
+
+  const showDeleteButton = () => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogListUser")
+    const loggedUser = JSON.parse(loggedUserJSON).username
+    const blogUser = blog.user.username
+    return loggedUser === blogUser
   }
 
   return (
@@ -16,7 +23,7 @@ const Blog = ({ blog, updateLikes }) => {
         {" "}
         <button onClick={toggleShowDetails}>{showDetails ? "hide" : "view"}</button>
       </div>  
-      {true &&
+      {showDetails &&
         <>
           <div>url: {blog.url}</div>
           <div>
@@ -27,6 +34,11 @@ const Blog = ({ blog, updateLikes }) => {
             </button>
           </div>
           <div>Posted by: {blog.user.username}</div>
+          {showDeleteButton() &&
+            <button onClick={() => deleteBlog(blog.id)}>
+              delete
+            </button>
+          }
         </>
       }
     </div>

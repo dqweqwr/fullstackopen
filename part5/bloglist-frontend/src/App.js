@@ -16,9 +16,12 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    const initializeBlogList = async () => {
+      const blogs = await blogService.getAll()      
       setBlogs(blogs)
-    )
+    }
+
+    initializeBlogList()
   }, [])
 
   useEffect(() => {
@@ -109,15 +112,38 @@ const App = () => {
       })
 
       setBlogs(updatedBlogList)
+    } catch (e) {
+      const error = e.response.data.error
+
+      showNotification({
+        type: "error",
+        value: error
+      })
+    }
+  }
+
+  const deleteBlog = async (id) => {
+    const blogToDelete = blogs.find(b => b.id === id)
+    const confirmation = window.confirm("are you sure?")
+
+    if (!confirmation) return
+
+    try {
+      await blogService.destroy(id)
+
+      const updatedBlogList = blogs.filter(b => b.id !== id)
+      setBlogs(updatedBlogList)
 
       showNotification({
         type: "success",
-        value: `"${returnedBlog.title}" by ${returnedBlog.author} liked`
+        value: `"${blogToDelete.title}" by ${blogToDelete.author} deleted`
       })
     } catch (e) {
+      const error = e.response.data.error
+
       showNotification({
         type: "error",
-        value: "An error occured"
+        value: error
       })
     }
   }
@@ -164,6 +190,7 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 updateLikes={updateLikes}
+                deleteBlog={deleteBlog}
               />
             })
           }
