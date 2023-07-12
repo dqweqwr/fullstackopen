@@ -22,7 +22,7 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
         author: {blog.author}
         {" "}
         <button onClick={toggleShowDetails}>{showDetails ? "hide" : "view"}</button>
-      </div>  
+      </div>
       {showDetails &&
         <>
           <div>url: {blog.url}</div>
