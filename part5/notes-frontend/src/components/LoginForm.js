@@ -14,8 +14,9 @@ const LoginForm = ({ handleLogin }) => {
   return (
     <form onSubmit={login}>
       <div>
-        username:
+        <label htmlFor="username">username:</label>
         <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -23,8 +24,9 @@ const LoginForm = ({ handleLogin }) => {
         />
       </div>
       <div>
-        password:
+        <label htmlFor="password">password:</label>
         <input
+          id="password"
           type="password"
           value={password}
           name="Password"
