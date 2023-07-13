@@ -200,6 +200,7 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 updateLikes={updateLikes}
+                deleteBlog={deleteBlog}
               />
             })
           }

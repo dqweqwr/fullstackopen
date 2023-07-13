@@ -9,6 +9,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
 
   const showDeleteButton = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogListUser")
+
+    if (loggedUserJSON === null) return false
+
     const loggedUser = JSON.parse(loggedUserJSON).username
     const blogUser = blog.user.username
     return loggedUser === blogUser
@@ -21,7 +24,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
         {" "}
         author: {blog.author}
         {" "}
-        <button onClick={toggleShowDetails}>{showDetails ? "hide" : "view"}</button>
+        <button onClick={toggleShowDetails}>
+          {showDetails ? "hide" : "view"}
+        </button>
       </div>
       {showDetails &&
         <>
