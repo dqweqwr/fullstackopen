@@ -2,9 +2,12 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  max-width: 1366px;
-  margin: 0 auto;
   padding: 24px;
+}
+
+#root {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .error, .success {
