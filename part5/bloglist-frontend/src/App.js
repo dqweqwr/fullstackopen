@@ -65,7 +65,6 @@ const App = () => {
         type: "error",
         value: "Invalid username or password"
       })
-      throw Error
     }
   }
 
