@@ -32,7 +32,7 @@ Cypress.Commands.add("login", ({ username, password }) => {
   cy.visit("");
 })
 
-Cypress.Commands.add("createBlog", ({ title, url, author }) => {
+Cypress.Commands.add("createBlog", ({ title, url, author, likes }) => {
   const user = JSON.parse(
     window.localStorage.getItem("loggedBlogListUser")
   )
@@ -42,6 +42,11 @@ Cypress.Commands.add("createBlog", ({ title, url, author }) => {
     author,
     userId: user.id
   }
+
+  if (likes) {
+    body.likes = likes
+  }
+
   cy.request({
     method: "POST",
     url: `${Cypress.env("BACKEND")}/blogs`,

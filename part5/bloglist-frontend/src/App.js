@@ -181,28 +181,30 @@ const App = () => {
             {" "}
             on top
           </div>
-          {sortByLikes &&
-            [...blogs].sort((a, b) => {
-              return b.likes - a.likes
-            }).map(blog => {
-              return <Blog
-                key={blog.id}
-                blog={blog}
-                updateLikes={updateLikes}
-                deleteBlog={deleteBlog}
-              />
-            })
-          }
-          {!sortByLikes &&
-            blogs.map(blog => {
-              return <Blog
-                key={blog.id}
-                blog={blog}
-                updateLikes={updateLikes}
-                deleteBlog={deleteBlog}
-              />
-            })
-          }
+          <div className="list-of-blogs">
+            {sortByLikes &&
+              [...blogs].sort((a, b) => {
+                return b.likes - a.likes
+              }).map(blog => {
+                return <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateLikes={updateLikes}
+                  deleteBlog={deleteBlog}
+                />
+              })
+            }
+            {!sortByLikes &&
+              blogs.map(blog => {
+                return <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateLikes={updateLikes}
+                  deleteBlog={deleteBlog}
+                />
+              })
+            }
+          </div>
         </>
       }
     </div>

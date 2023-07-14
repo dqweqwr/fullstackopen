@@ -66,7 +66,7 @@ describe("Blog app", function() {
       cy.contains(`author: ${author}`)
     })
 
-    describe("When a blog listing exists", function() {
+    describe("When a single blog listing exists", function() {
       beforeEach(function() {
         cy.createBlog({ title, url, author })
       })
@@ -95,7 +95,7 @@ describe("Blog app", function() {
           .contains("\"I want off Mr. Golang's Wild Ride\" by fasterthanlime deleted")
       })
 
-      it.only("User cannot delete blog listings they didnt create (delete button is hidden)", function() {
+      it("User cannot delete blog listings they didnt create (delete button is hidden)", function() {
         cy.contains("Log out")
           .click()
         cy.login(user2)
@@ -106,6 +106,89 @@ describe("Blog app", function() {
         cy.contains(`title: ${title}`)
           .parent()
           .should("not.include.text", "delete")
+      })
+    })
+
+    describe("When multiple blog listings exist", function() {
+      const blog1 = {
+        title: "Mechanical watch",
+        author: "Bartosz Ciechanowski",
+        url: "https://ciechanow.ski/mechanical-watch/",
+        likes: 6
+      }
+
+      const blog2 = {
+        title: "How I cut GTA Online loading times by 70%",
+        author: "t0st",
+        url: "https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/",
+        likes: 4
+      }
+
+      const blog3 = {
+        title: "Announcing the first SHA1 collision",
+        author: "google",
+        url: "https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html",
+        likes: 3
+      }
+
+      const blog4 = {
+        title: "Bob's blog",
+        author: "Bob",
+        url: "bobsblog.com",
+        likes: 2
+      }
+
+      beforeEach(function() {
+        cy.createBlog(blog1)
+        cy.createBlog(blog2)
+        cy.createBlog(blog3)
+        cy.createBlog(blog4)
+      })
+
+      it("blogs are ordered based on likes (most liked blogs on top, least liked on bottom)", function() {
+        cy.get(".list-of-blogs > .blog-listing")
+          .as("listOfBlogs")
+
+        cy.get("@listOfBlogs")
+          .eq(0)
+          .as("blog1")
+          .contains(`title: ${blog1.title}`)
+        cy.get("@listOfBlogs")
+          .eq(1)
+          .as("blog2")
+          .contains(`title: ${blog2.title}`)
+        cy.get("@listOfBlogs")
+          .eq(2)
+          .as("blog3")
+          .contains(`title: ${blog3.title}`)
+        cy.get("@listOfBlogs")
+          .eq(3)
+          .as("blog4")
+          .contains(`title: ${blog4.title}`)
+
+        cy.get("@blog4")
+          .find("button")
+          .click()
+        cy.get("@blog4")
+          .find("button")
+          .contains("like")
+          .as("likeButton")
+
+        cy.get("@likeButton")
+          .click()
+          .wait(800)
+          .click()
+          .wait(800)
+          .click()
+          .wait(800)
+          .click()
+          .wait(800)
+          .click()
+          .wait(800)
+
+        cy.get("@listOfBlogs")
+          .eq(0)
+          .contains(`title: ${blog4.title}`)
       })
     })
   })
