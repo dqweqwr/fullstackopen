@@ -4,7 +4,7 @@ import { addVote } from "../reducers/anecdotesReducer"
 const Anecdote = ({ anecdote, handleClick }) => {
   return (
     <div>
-      <div>content: {anecdote.content}</div>
+      <div>{anecdote.content}</div>
       <div>
         has {anecdote.votes} votes
         <button onClick={handleClick}>
@@ -15,7 +15,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   )
 }
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state)
 
@@ -36,4 +36,4 @@ const Anecdotes = () => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList

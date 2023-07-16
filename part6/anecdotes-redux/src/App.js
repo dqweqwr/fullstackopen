@@ -1,12 +1,12 @@
 import AnecdotesForm from "./components/AnecdotesForm";
-import Anecdotes from "./components/Anecdotes";
+import AnecdoteList from "./components/AnecdoteList";
 
 function App() {
   return (
     <>
       <h1>Anecdotes</h1>
       <AnecdotesForm />
-      <Anecdotes />
+      <AnecdoteList />
     </>
   );
 }
