@@ -1,4 +1,17 @@
-const noteReducer = (state = [], action) => {
+const initialState = [
+  {
+    content: "first note",
+    important: true,
+    id: 1
+  },
+  {
+    content: "second note",
+    important: false,
+    id: 2
+  }
+]
+
+const noteReducer = (state = initialState, action) => {
   switch (action.type) {
     case "NEW_NOTE":
       return [...state, action.payload]
@@ -18,8 +31,9 @@ const noteReducer = (state = [], action) => {
   }
 }
 
-const generateId = () =>
-  Number((Math.random() * 1000000).toFixed(0))
+const generateId = () => {
+  return Number((Math.random() * 1000000).toFixed(0))
+}
 
 export const createNote = (content) => {
   return {
