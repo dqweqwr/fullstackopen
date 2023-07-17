@@ -12,7 +12,7 @@ const VisibilityFilter = (props) => {
         type="radio"
         name="filter"
         onChange={() => dispatch(filterChange("ALL"))}
-        checked
+        defaultChecked
       />
       <label htmlFor="important">important</label>
       <input
