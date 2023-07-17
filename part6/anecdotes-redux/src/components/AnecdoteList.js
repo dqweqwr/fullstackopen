@@ -18,13 +18,14 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
+
   const anecdotes = useSelector(({ filter, anecdotes })=> {
     if (filter === "") {
       return anecdotes
     }
-    const escapedFilter = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const matcher = new RegExp(escapedFilter, "i")
     return anecdotes.filter(anecdote => {
+      const escapedFilter = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      const matcher = new RegExp(escapedFilter, "i")
       return anecdote.content.match(matcher)
     })
   })

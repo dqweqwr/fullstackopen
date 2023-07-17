@@ -10,7 +10,7 @@ describe("anecdotesReducer", () => {
     }]
 
     const action = {
-      type: "NEW_ANECDOTE",
+      type: "anecdotes/createAnecdote",
       payload: {
         content: "new anecdote",
         votes: 300,
@@ -22,7 +22,7 @@ describe("anecdotesReducer", () => {
     const newState = anecdotesReducer(state, action)
 
     expect(newState.length).toBe(state.length + 1)
-    expect(newState).toContainEqual(action.payload)
+    expect(newState.map(a => a.content)).toContainEqual(action.payload)
   })
 
   test("action with type VOTE adds one to anecdote vote count", () => {
@@ -40,10 +40,8 @@ describe("anecdotesReducer", () => {
     ]
 
     const action = {
-      type: "VOTE",
-      payload: {
-        id: 99999
-      }
+      type: "anecdotes/addVote",
+      payload: 99999
     }
 
     deepFreeze(state)
@@ -73,10 +71,8 @@ describe("anecdotesReducer", () => {
     ]
 
     const action = {
-      type: "VOTE",
-      payload: {
-        id: 55555
-      }
+      type: "anecdotes/addVote",
+      payload: 55555
     }
 
     deepFreeze(state)
