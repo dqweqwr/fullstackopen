@@ -7,6 +7,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
       <div>{anecdote.content}</div>
       <div>
         has {anecdote.votes} votes
+        {" "}
         <button onClick={handleClick}>
           vote
         </button>
@@ -17,7 +18,16 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(({ filter, anecdotes })=> {
+    if (filter === "") {
+      return anecdotes
+    }
+    const escapedFilter = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const matcher = new RegExp(escapedFilter, "i")
+    return anecdotes.filter(anecdote => {
+      return anecdote.content.match(matcher)
+    })
+  })
 
   return (
     <>
