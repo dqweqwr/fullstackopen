@@ -14,3 +14,10 @@ code {
 .anecdote-form {
   margin-bottom: 10px;
 }
+
+.notification {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #000;
+  margin-bottom: 16px;
+}
