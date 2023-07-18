@@ -11,6 +11,10 @@ code {
     monospace;
 }
 
+.anecdote {
+  padding-bottom: 12px;
+}
+
 .anecdote-form {
   margin-bottom: 10px;
 }
