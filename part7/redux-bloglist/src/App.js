@@ -5,7 +5,6 @@ import Notification from "./components/Notification"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Togglable"
-import Blog from "./components/Blog"
 
 import blogService from "./services/blogs"
 import loginService from "./services/login"
@@ -14,29 +13,14 @@ import {
   showErrorNotification,
 } from "./reducers/notificationReducer"
 import {
-  setBlogs,
   createBlog,
-  updateBlog,
-  deleteBlog,
 } from "./reducers/blogsReducer"
+import BlogList from "./components/BlogList"
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const blogs = useSelector((state) => state.blogs)
   const [user, setUser] = useState(null)
-  const [sortByLikes, setSortByLikes] = useState(true)
-
-  const blogFormRef = useRef()
-
-  useEffect(() => {
-    const initializeBlogList = async () => {
-      const blogs = await blogService.getAll()
-      dispatch(setBlogs(blogs))
-    }
-
-    initializeBlogList()
-  }, [])
 
   useEffect(() => {
     const loggedUserJSON = localStorage.getItem("loggedBlogListUser")
@@ -72,62 +56,6 @@ const App = () => {
     blogService.setToken(null)
   }
 
-  const createBlog = async (blog) => {
-    try {
-      const newBlog = await blogService.create(blog)
-      dispatch(createBlog(newBlog))
-      dispatch(
-        showSuccessNotification(
-          `A new blog "${newBlog.title}" by ${newBlog.author} created`
-        )
-      )
-      blogFormRef.current.toggleVisibility()
-    } catch (e) {
-      const error = e.response.data.error
-
-      dispatch(showErrorNotification(error))
-    }
-  }
-
-  const updateLikes = async (id) => {
-    const blogToUpdate = blogs.find((b) => b.id === id)
-
-    const updatedBlog = {
-      ...blogToUpdate,
-      likes: blogToUpdate.likes + 1,
-      user: blogToUpdate.user.id,
-    }
-
-    try {
-      const returnedBlog = await blogService.update(id, updatedBlog)
-
-      dispatch(updateBlog(returnedBlog))
-    } catch (e) {
-      const error = e.response.data.error
-
-      dispatch(showErrorNotification(error))
-    }
-  }
-
-  const deleteBlog = async (id) => {
-    const blogToDelete = blogs.find((b) => b.id === id)
-
-    try {
-      await blogService.destroy(id)
-
-      dispatch(deleteBlog(id))
-      dispatch(
-        showSuccessNotification(
-          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`
-        )
-      )
-    } catch (e) {
-      const error = e.response.data.error
-
-      dispatch(showErrorNotification(error))
-    }
-  }
-
   return (
     <div>
       <Notification />
@@ -144,45 +72,10 @@ const App = () => {
             Welcome back {user.username}!{" "}
             <button onClick={handleLogout}>Log out</button>
           </div>
-          <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
-            <BlogForm createBlog={createBlog} />
+          <Togglable buttonLabel="Add new blog">
+            <BlogForm />
           </Togglable>
-          <br />
-          <div>
-            Sorted by:{" "}
-            <button onClick={() => setSortByLikes(!sortByLikes)}>
-              {sortByLikes ? "most liked" : "oldest"}
-            </button>{" "}
-            on top
-          </div>
-          <div className="list-of-blogs">
-            {sortByLikes &&
-              [...blogs]
-                .sort((a, b) => {
-                  return b.likes - a.likes
-                })
-                .map((blog) => {
-                  return (
-                    <Blog
-                      key={blog.id}
-                      blog={blog}
-                      updateLikes={updateLikes}
-                      deleteBlog={deleteBlog}
-                    />
-                  )
-                })}
-            {!sortByLikes &&
-              blogs.map((blog) => {
-                return (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    updateLikes={updateLikes}
-                    deleteBlog={deleteBlog}
-                  />
-                )
-              })}
-          </div>
+          <BlogList />
         </>
       )}
     </div>
