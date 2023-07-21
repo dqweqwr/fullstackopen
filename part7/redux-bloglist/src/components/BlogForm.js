@@ -1,5 +1,8 @@
 import { useDispatch } from "react-redux"
 import { createBlog } from "../reducers/blogsReducer"
+
+import Togglable from "./Togglable"
+
 import {
   showSuccessNotification,
   showErrorNotification,
@@ -38,24 +41,26 @@ const BlogForm = () => {
 
   return (
     <>
-      <h2>Create new blog listing</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          <label htmlFor="title">Title: </label>
-          <input type="text" id="title" name="title" />
-        </div>
-        <div>
-          <label htmlFor="url">Url: </label>
-          <input type="text" id="url" name="url" />
-        </div>
-        <div>
-          <label htmlFor="author">Author: </label>
-          <input type="text" id="author" name="author" />
-        </div>
-        <div>
-          <button type="submit">Create</button>
-        </div>
-      </form>
+      <Togglable buttonLabel="Add new blog">
+        <h2>Create new blog listing</h2>
+        <form onSubmit={addBlog}>
+          <div>
+            <label htmlFor="title">Title: </label>
+            <input type="text" id="title" name="title" />
+          </div>
+          <div>
+            <label htmlFor="url">Url: </label>
+            <input type="text" id="url" name="url" />
+          </div>
+          <div>
+            <label htmlFor="author">Author: </label>
+            <input type="text" id="author" name="author" />
+          </div>
+          <div>
+            <button type="submit">Create</button>
+          </div>
+        </form>
+      </Togglable>
     </>
   )
 }

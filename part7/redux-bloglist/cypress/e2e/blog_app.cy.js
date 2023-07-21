@@ -22,7 +22,7 @@ describe("Blog app", function () {
   })
 
   it("login form is shown", function () {
-    cy.contains("User must be logged in to see blog list")
+    cy.contains("Log in")
   })
 
   describe("Login", function () {
