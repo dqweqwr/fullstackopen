@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useMatch } from "react-router-dom"
 import React, { useState } from 'react';
+import { Container } from "@mui/material";
 
-import Notification from "./components/Notification";
 import Home from "./components/Home";
 import Notes from "./components/Notes";
 import Note from "./components/Note";
@@ -9,6 +9,7 @@ import Users from "./components/Users";
 import Login from "./components/Login";
 import Menu from "./components/Menu";
 import Footer from "./components/Footer";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -48,7 +49,7 @@ const App = () => {
     : null
 
   return (
-    <div className="container">
+    <Container>
       <Notification message={message} />
       <Menu user={user} />
       <Routes>
@@ -59,7 +60,7 @@ const App = () => {
         <Route path="/login" element={<Login onLogin={login} />} />
       </Routes>
       <Footer />
-    </div>
+    </Container>
   );
 }
 

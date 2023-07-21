@@ -1,10 +1,10 @@
-import { Alert } from "react-bootstrap"
+import { Alert } from "@mui/material"
 
 const Notification = ({ message }) => {
   return (
     <>
       {message &&
-        <Alert variant="success">
+        <Alert severity="success">
           {message}
         </Alert>
       }
