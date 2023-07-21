@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import Notification from "./components/Notification"
 import LoginForm from "./components/LoginForm"
@@ -13,11 +13,17 @@ import {
   showSuccessNotification,
   showErrorNotification,
 } from "./reducers/notificationReducer"
+import {
+  setBlogs,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+} from "./reducers/blogsReducer"
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector((state) => state.blogs)
   const [user, setUser] = useState(null)
   const [sortByLikes, setSortByLikes] = useState(true)
 
@@ -26,7 +32,7 @@ const App = () => {
   useEffect(() => {
     const initializeBlogList = async () => {
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      dispatch(setBlogs(blogs))
     }
 
     initializeBlogList()
@@ -66,14 +72,14 @@ const App = () => {
     blogService.setToken(null)
   }
 
-  const createBlog = async (newBlog) => {
+  const createBlog = async (blog) => {
     try {
-      const blog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(blog))
+      const newBlog = await blogService.create(blog)
+      dispatch(createBlog(newBlog))
       dispatch(
         showSuccessNotification(
-          `A new blog "${newBlog.title}" by ${newBlog.author} created`,
-        ),
+          `A new blog "${newBlog.title}" by ${newBlog.author} created`
+        )
       )
       blogFormRef.current.toggleVisibility()
     } catch (e) {
@@ -95,11 +101,7 @@ const App = () => {
     try {
       const returnedBlog = await blogService.update(id, updatedBlog)
 
-      const updatedBlogList = blogs.map((b) => {
-        return b.id === id ? returnedBlog : b
-      })
-
-      setBlogs(updatedBlogList)
+      dispatch(updateBlog(returnedBlog))
     } catch (e) {
       const error = e.response.data.error
 
@@ -113,13 +115,11 @@ const App = () => {
     try {
       await blogService.destroy(id)
 
-      const updatedBlogList = blogs.filter((b) => b.id !== id)
-      setBlogs(updatedBlogList)
-
+      dispatch(deleteBlog(id))
       dispatch(
         showSuccessNotification(
-          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`,
-        ),
+          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`
+        )
       )
     } catch (e) {
       const error = e.response.data.error
