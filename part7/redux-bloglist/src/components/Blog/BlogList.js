@@ -1,3 +1,6 @@
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -28,6 +31,10 @@ const BlogList = () => {
             <Link to={`/blogs/${blog.id}`}>
               {blog.title}
             </Link>
+            {" "}
+            Likes: {blog.likes}
+            {" "}
+            Posted: {dayjs(blog.createdAt).fromNow()}
           </div>
         ))}
       </div>

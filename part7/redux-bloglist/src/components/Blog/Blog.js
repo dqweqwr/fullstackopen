@@ -1,3 +1,6 @@
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
 import { useMatch } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -82,6 +85,7 @@ const Blog = () => {
           <button onClick={() => updateLikes(blog)}>like</button>
         </div>
         <div>Posted by: {blog.user.username}</div>
+        <div>Posted: {dayjs(blog.createdAt).fromNow()}</div>
         {showDeleteButton() && (
           <button onClick={() => removeBlog(blog)}>delete</button>
         )}

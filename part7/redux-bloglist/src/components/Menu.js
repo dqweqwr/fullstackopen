@@ -9,13 +9,11 @@ const Menu = () => {
 
   return (
     <>
-      <Link to="/">Home</Link>
+      <Link to="/">Blogs</Link>
       <Link to="/users">Users</Link>
+      {loggedUser.username} Logged in{" "}
+      <button onClick={() => dispatch(handleLogout())}>Log out</button>
       <h1>Blogs</h1>
-      <div>
-        Welcome back {loggedUser.username}!{" "}
-        <button onClick={() => dispatch(handleLogout())}>Log out</button>
-      </div>
     </>
   )
 }
