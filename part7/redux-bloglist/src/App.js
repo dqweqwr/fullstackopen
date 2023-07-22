@@ -1,11 +1,8 @@
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { BrowserRouter } from "react-router-dom"
 
-import Notification from "./components/Notification"
-import LoginForm from "./components/LoginForm"
-import Menu from "./components/Menu"
-import BlogForm from "./components/BlogForm"
-import BlogList from "./components/BlogList"
+import AppRoutes from "./components/AppRoutes"
 
 import { initializeUser } from "./reducers/userReducer"
 
@@ -16,22 +13,10 @@ const App = () => {
     dispatch(initializeUser())
   }, [])
 
-  const user = useSelector(state => state.user)
-
   return (
-    <>
-      <Notification />
-      {!user &&
-        <LoginForm />
-      }
-      {user && (
-        <>
-          <Menu />
-          <BlogForm />
-          <BlogList />
-        </>
-      )}
-    </>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
 

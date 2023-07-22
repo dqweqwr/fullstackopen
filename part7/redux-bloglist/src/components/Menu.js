@@ -4,7 +4,7 @@ import { handleLogout } from "../reducers/userReducer"
 const Menu = () => {
   const dispatch = useDispatch()
 
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user)
 
   return (
     <>

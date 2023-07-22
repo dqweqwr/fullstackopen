@@ -1,7 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import blogService from "../services/blogs";
-import loginService from "../services/login";
-import { showSuccessNotification, showErrorNotification } from "./notificationReducer";
+import { createSlice } from "@reduxjs/toolkit"
+import blogService from "../services/blogs"
+import loginService from "../services/login"
+import {
+  showSuccessNotification,
+  showErrorNotification,
+} from "./notificationReducer"
 
 const initialState = null
 
@@ -14,14 +17,14 @@ const userSlice = createSlice({
     },
     removeUser(state, action) {
       return null
-    }
-  }
+    },
+  },
 })
 
 export const { setUser, removeUser } = userSlice.actions
 
 export const initializeUser = () => {
-  return dispatch => {
+  return (dispatch) => {
     const loggedUserJSON = localStorage.getItem("loggedBlogListUser")
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -32,7 +35,7 @@ export const initializeUser = () => {
 }
 
 export const handleLogin = (username, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem("loggedBlogListUser", JSON.stringify(user))
@@ -46,7 +49,7 @@ export const handleLogin = (username, password) => {
 }
 
 export const handleLogout = () => {
-  return dispatch => {
+  return (dispatch) => {
     localStorage.removeItem("loggedBlogListUser")
     blogService.setToken(null)
     dispatch(removeUser())

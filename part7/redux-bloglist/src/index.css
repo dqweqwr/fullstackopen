@@ -35,3 +35,14 @@ body {
   padding: 8px;
   border-radius: 8px;
 }
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  text-align: left;
+  border: 1px solid #000;
+  padding: 12px;
+}

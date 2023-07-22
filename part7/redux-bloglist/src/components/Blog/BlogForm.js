@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux"
-import { createBlog } from "../reducers/blogsReducer"
+import { createBlog } from "../../reducers/blogsReducer"
 
-import Togglable from "./Togglable"
+import Togglable from "../Togglable"
 
 import {
   showSuccessNotification,
   showErrorNotification,
-} from "../reducers/notificationReducer"
-import blogService from "../services/blogs"
+} from "../../reducers/notificationReducer"
+import blogService from "../../services/blogs"
 
 const BlogForm = () => {
   const dispatch = useDispatch()
@@ -26,8 +26,8 @@ const BlogForm = () => {
       dispatch(createBlog(newBlog))
       dispatch(
         showSuccessNotification(
-          `A new blog "${newBlog.title}" by ${newBlog.author} created`
-        )
+          `A new blog "${newBlog.title}" by ${newBlog.author} created`,
+        ),
       )
       e.target.title.value = ""
       e.target.url.value = ""

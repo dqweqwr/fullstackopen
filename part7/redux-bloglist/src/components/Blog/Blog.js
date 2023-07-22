@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 
-import blogService from "../services/blogs"
-import { updateBlog, deleteBlog } from "../reducers/blogsReducer"
-import { showSuccessNotification, showErrorNotification } from "../reducers/notificationReducer"
+import blogService from "../../services/blogs"
+import { updateBlog, deleteBlog } from "../../reducers/blogsReducer"
+import {
+  showSuccessNotification,
+  showErrorNotification,
+} from "../../reducers/notificationReducer"
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -32,7 +35,10 @@ const Blog = ({ blog }) => {
     }
 
     try {
-      const returnedBlog = await blogService.update(blogToUpdate.id, updatedBlog)
+      const returnedBlog = await blogService.update(
+        blogToUpdate.id,
+        updatedBlog,
+      )
 
       dispatch(updateBlog(returnedBlog))
     } catch (e) {
@@ -51,8 +57,8 @@ const Blog = ({ blog }) => {
       dispatch(deleteBlog(id))
       dispatch(
         showSuccessNotification(
-          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`
-        )
+          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`,
+        ),
       )
     } catch (e) {
       const error = e.response.data.error
@@ -64,8 +70,7 @@ const Blog = ({ blog }) => {
   return (
     <div className="blog-listing">
       <div>
-        title: {blog.title} author: {blog.author}
-        {" "}
+        title: {blog.title} author: {blog.author}{" "}
         <button onClick={toggleShowDetails}>
           {showDetails ? "hide" : "view"}
         </button>

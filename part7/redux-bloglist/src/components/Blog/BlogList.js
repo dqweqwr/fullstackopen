@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setBlogs } from "../reducers/blogsReducer"
+import { setBlogs } from "../../reducers/blogsReducer"
 
 import Blog from "./Blog"
-import blogService from "../services/blogs"
+import blogService from "../../services/blogs"
 
 const BlogList = () => {
   const dispatch = useDispatch()
