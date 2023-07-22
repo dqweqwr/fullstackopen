@@ -5,7 +5,7 @@ const User = () => {
   const match = useMatch("/users/:id")
 
   const user = useSelector((state) =>
-    state.users.find((user) => user.id === match.params.id)
+    state.users.find((user) => user.id === match.params.id),
   )
 
   if (!user) return null

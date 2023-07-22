@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   font-family: "Roboto", sans-serif;
@@ -41,7 +44,8 @@ body {
   border-collapse: collapse;
 }
 
-td, th {
+td,
+th {
   text-align: left;
   border: 1px solid #000;
   padding: 12px;

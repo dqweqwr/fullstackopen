@@ -38,7 +38,10 @@ export const handleLogin = (username, password) => {
   return async (dispatch) => {
     try {
       const loggedUser = await loginService.login({ username, password })
-      window.localStorage.setItem("loggedBlogListUser", JSON.stringify(loggedUser))
+      window.localStorage.setItem(
+        "loggedBlogListUser",
+        JSON.stringify(loggedUser),
+      )
       blogService.setToken(loggedUser.token)
       dispatch(setLoggedUser(loggedUser))
       dispatch(showSuccessNotification(`Logged in as ${loggedUser.username}`))

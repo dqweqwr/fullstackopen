@@ -28,13 +28,8 @@ const BlogList = () => {
       <div className="list-of-blogs">
         {blogs.map((blog) => (
           <div key={blog.id} className="blog-listing">
-            <Link to={`/blogs/${blog.id}`}>
-              {blog.title}
-            </Link>
-            {" "}
-            Likes: {blog.likes}
-            {" "}
-            Posted: {dayjs(blog.createdAt).fromNow()}
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> Likes:{" "}
+            {blog.likes} Posted: {dayjs(blog.createdAt).fromNow()}
           </div>
         ))}
       </div>

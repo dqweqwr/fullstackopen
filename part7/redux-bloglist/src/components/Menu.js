@@ -13,7 +13,7 @@ const Menu = () => {
       <Link to="/users">Users</Link>
       {loggedUser.username} Logged in{" "}
       <button onClick={() => dispatch(handleLogout())}>Log out</button>
-      <h1>Blogs</h1>
+      <h1 className="text-3xl font-bold">Blogs</h1>
     </>
   )
 }

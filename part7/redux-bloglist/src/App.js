@@ -8,7 +8,6 @@ import { initializeBlogs } from "./reducers/blogsReducer"
 import { initializeLoggedUser } from "./reducers/loggedUserReducer"
 import { initializeUsers } from "./reducers/usersReducer"
 
-
 const App = () => {
   const dispatch = useDispatch()
 
