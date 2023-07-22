@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useMatch } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 
 import blogService from "../../services/blogs"
 import { updateBlog, deleteBlog } from "../../reducers/blogsReducer"
@@ -8,14 +8,16 @@ import {
   showErrorNotification,
 } from "../../reducers/notificationReducer"
 
-const Blog = ({ blog }) => {
+const Blog = () => {
   const dispatch = useDispatch()
 
-  const [showDetails, setShowDetails] = useState(false)
 
-  const toggleShowDetails = () => {
-    setShowDetails(!showDetails)
-  }
+  const match = useMatch("/blogs/:id")
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === match.params.id)
+  )
+
+  if (!blog) return null
 
   const showDeleteButton = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogListUser")
@@ -68,26 +70,22 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <div className="blog-listing">
-      <div>
-        title: {blog.title} author: {blog.author}{" "}
-        <button onClick={toggleShowDetails}>
-          {showDetails ? "hide" : "view"}
-        </button>
-      </div>
-      {showDetails && (
-        <>
-          <div>url: {blog.url}</div>
-          <div>
-            likes: {blog.likes}{" "}
-            <button onClick={() => updateLikes(blog)}>like</button>
-          </div>
-          <div>Posted by: {blog.user.username}</div>
-          {showDeleteButton() && (
-            <button onClick={() => removeBlog(blog)}>delete</button>
-          )}
-        </>
-      )}
+    <div>
+      <h1>
+        {blog.title}
+      </h1>
+      <>
+        <div>author: {blog.author}</div>
+        <div>url: {blog.url}</div>
+        <div>
+          likes: {blog.likes}{" "}
+          <button onClick={() => updateLikes(blog)}>like</button>
+        </div>
+        <div>Posted by: {blog.user.username}</div>
+        {showDeleteButton() && (
+          <button onClick={() => removeBlog(blog)}>delete</button>
+        )}
+      </>
     </div>
   )
 }

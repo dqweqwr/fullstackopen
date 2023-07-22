@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { setBlogs } from "../../reducers/blogsReducer"
-
-import Blog from "./Blog"
-import blogService from "../../services/blogs"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 const BlogList = () => {
-  const dispatch = useDispatch()
   const [sortByLikes, setSortByLikes] = useState(true)
 
   let blogs = useSelector((state) => {
@@ -16,15 +12,6 @@ const BlogList = () => {
   if (sortByLikes) {
     blogs = [...blogs].sort((a, b) => b.likes - a.likes)
   }
-
-  useEffect(() => {
-    const initializeBlogList = async () => {
-      const blogs = await blogService.getAll()
-      dispatch(setBlogs(blogs))
-    }
-
-    initializeBlogList()
-  }, [])
 
   return (
     <>
@@ -37,7 +24,11 @@ const BlogList = () => {
       </div>
       <div className="list-of-blogs">
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <div key={blog.id} className="blog-listing">
+            <Link to={`/blogs/${blog.id}`}>
+              {blog.title}
+            </Link>
+          </div>
         ))}
       </div>
     </>

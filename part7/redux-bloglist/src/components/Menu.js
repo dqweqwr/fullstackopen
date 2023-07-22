@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { handleLogout } from "../reducers/loggedUserReducer"
 
@@ -8,6 +9,8 @@ const Menu = () => {
 
   return (
     <>
+      <Link to="/">Home</Link>
+      <Link to="/users">Users</Link>
       <h1>Blogs</h1>
       <div>
         Welcome back {loggedUser.username}!{" "}
