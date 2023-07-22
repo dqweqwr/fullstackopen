@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux"
-import { handleLogin } from "../reducers/userReducer"
+import { useDispatch } from "react-redux"
+import { handleLogin } from "../reducers/loggedUserReducer"
 
 const LoginForm = () => {
   const dispatch = useDispatch()

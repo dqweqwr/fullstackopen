@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 
 import Notification from "./Notification"
 import LoginForm from "./LoginForm"
@@ -10,9 +10,9 @@ import Users from "./Users/Users"
 import User from "./Users/User"
 
 const AppRoutes = () => {
-  const user = useSelector((state) => state.user)
+  const loggedUser = useSelector((state) => state.loggedUser)
 
-  if (!user)
+  if (!loggedUser)
     return (
       <>
         <Notification />

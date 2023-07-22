@@ -4,13 +4,15 @@ import { BrowserRouter } from "react-router-dom"
 
 import AppRoutes from "./components/AppRoutes"
 
-import { initializeUser } from "./reducers/userReducer"
+import { initializeLoggedUser } from "./reducers/loggedUserReducer"
+import { initializeUsers } from "./reducers/usersReducer"
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeUser())
+    dispatch(initializeLoggedUser())
+    dispatch(initializeUsers())
   }, [])
 
   return (

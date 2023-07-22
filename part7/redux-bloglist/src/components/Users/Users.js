@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react"
-import userServices from "../../services/users"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { initializeUsers } from "../../reducers/usersReducer"
+import { Link } from "react-router-dom"
 
-const User = () => {
-  const [users, setUsers] = useState([])
+const Users = () => {
+  const dispatch = useDispatch()
+
+  const users = useSelector((state) => state.users)
 
   useEffect(() => {
-    userServices.getAll()
-      .then(data =>
-        setUsers(data)
-      )
+    dispatch(initializeUsers())
   }, [])
-
-  console.log(users)
 
   return (
     <>
@@ -23,10 +22,12 @@ const User = () => {
             <th>Name</th>
             <th>Blogs Created</th>
           </tr>
-          {users.map(user => {
+          {users.map((user) => {
             return (
               <tr key={user.id}>
-                <td>{user.username}</td>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.username}</Link>
+                </td>
                 <td>{user.name}</td>
                 <td>{user.blogs.length}</td>
               </tr>
@@ -38,4 +39,4 @@ const User = () => {
   )
 }
 
-export default User
+export default Users
