@@ -61,8 +61,8 @@ describe("Blog app", function () {
       cy.get("#author").type(author)
       cy.get("button[type='submit']").click()
 
-      cy.contains(`title: ${title}`)
-      cy.contains(`author: ${author}`)
+      cy.contains(title)
+      cy.contains("Posted: a few seconds ago")
     })
 
     describe("When a single blog listing exists", function () {
@@ -71,7 +71,7 @@ describe("Blog app", function () {
       })
 
       it("users can like a blog", function () {
-        cy.contains(`title: ${title}`).parent().find("button").click()
+        cy.contains(title).click()
         cy.contains("likes: 0")
         cy.get("button")
           .contains(/^like$/)
@@ -80,7 +80,7 @@ describe("Blog app", function () {
       })
 
       it("User can delete blog listings they have created", function () {
-        cy.contains(`title: ${title}`).parent().find("button").click()
+        cy.contains(title).click()
         cy.get("button").contains("delete").click()
         cy.get(".success").contains(
           '"I want off Mr. Golang\'s Wild Ride" by fasterthanlime deleted',
@@ -90,10 +90,8 @@ describe("Blog app", function () {
       it("User cannot delete blog listings they didnt create (delete button is hidden)", function () {
         cy.contains("Log out").click()
         cy.login(user2)
-        cy.contains(`title: ${title}`).parent().find("button").click()
-        cy.contains(`title: ${title}`)
-          .parent()
-          .should("not.include.text", "delete")
+        cy.contains(title).click()
+        cy.contains(title).parent().should("not.include.text", "delete")
       })
     })
 
@@ -136,25 +134,13 @@ describe("Blog app", function () {
       it("blogs are ordered based on likes (most liked blogs on top, least liked on bottom)", function () {
         cy.get(".list-of-blogs > .blog-listing").as("listOfBlogs")
 
-        cy.get("@listOfBlogs")
-          .eq(0)
-          .as("blog1")
-          .contains(`title: ${blog1.title}`)
-        cy.get("@listOfBlogs")
-          .eq(1)
-          .as("blog2")
-          .contains(`title: ${blog2.title}`)
-        cy.get("@listOfBlogs")
-          .eq(2)
-          .as("blog3")
-          .contains(`title: ${blog3.title}`)
-        cy.get("@listOfBlogs")
-          .eq(3)
-          .as("blog4")
-          .contains(`title: ${blog4.title}`)
+        cy.get("@listOfBlogs").eq(0).as("blog1").contains(blog1.title)
+        cy.get("@listOfBlogs").eq(1).as("blog2").contains(blog2.title)
+        cy.get("@listOfBlogs").eq(2).as("blog3").contains(blog3.title)
+        cy.get("@listOfBlogs").eq(3).as("blog4").contains(blog4.title)
 
-        cy.get("@blog4").find("button").click()
-        cy.get("@blog4").find("button").contains("like").as("likeButton")
+        cy.get("@blog4").contains(blog4.title).click()
+        cy.contains("like").as("likeButton")
 
         cy.get("@likeButton")
           .click()
@@ -168,7 +154,8 @@ describe("Blog app", function () {
           .click()
           .wait(800)
 
-        cy.get("@listOfBlogs").eq(0).contains(`title: ${blog4.title}`)
+        cy.contains("Blogs").click()
+        cy.get("@listOfBlogs").eq(0).contains(blog4.title)
       })
     })
   })

@@ -7,7 +7,6 @@ import {
   showSuccessNotification,
   showErrorNotification,
 } from "../../reducers/notificationReducer"
-import blogService from "../../services/blogs"
 
 const BlogForm = () => {
   const dispatch = useDispatch()
@@ -19,10 +18,9 @@ const BlogForm = () => {
     const url = e.target.url.value
     const author = e.target.author.value
 
-    const obj = { title, url, author }
+    const newBlog = { title, url, author }
 
     try {
-      const newBlog = await blogService.create(obj)
       dispatch(createBlog(newBlog))
       dispatch(
         showSuccessNotification(

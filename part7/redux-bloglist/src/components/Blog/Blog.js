@@ -4,7 +4,6 @@ dayjs.extend(relativeTime)
 import { useMatch } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
-import blogService from "../../services/blogs"
 import { updateBlog, deleteBlog, addComment } from "../../reducers/blogsReducer"
 import {
   showSuccessNotification,
@@ -31,20 +30,15 @@ const Blog = () => {
     return loggedUser === blogUser
   }
 
-  const updateLikes = async (blogToUpdate) => {
+  const updateLikes = async () => {
     const updatedBlog = {
-      ...blogToUpdate,
-      likes: blogToUpdate.likes + 1,
-      user: blogToUpdate.user.id,
+      ...blog,
+      likes: blog.likes + 1,
+      user: blog.user.id,
     }
 
     try {
-      const returnedBlog = await blogService.update(
-        blogToUpdate.id,
-        updatedBlog,
-      )
-
-      dispatch(updateBlog(returnedBlog))
+      dispatch(updateBlog(updatedBlog))
     } catch (e) {
       const error = e.response.data.error
 
@@ -52,17 +46,11 @@ const Blog = () => {
     }
   }
 
-  const removeBlog = async (blogToDelete) => {
-    const id = blogToDelete.id
-
+  const removeBlog = async () => {
     try {
-      await blogService.destroy(id)
-
-      dispatch(deleteBlog(id))
+      dispatch(deleteBlog(blog.id))
       dispatch(
-        showSuccessNotification(
-          `"${blogToDelete.title}" by ${blogToDelete.author} deleted`,
-        ),
+        showSuccessNotification(`"${blog.title}" by ${blog.author} deleted`),
       )
     } catch (e) {
       const error = e.response.data.error
@@ -74,17 +62,9 @@ const Blog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const comment = e.target.comment.value
-    console.log(blog.id)
-    const updatedBlog = {
-      ...blog,
-      comments: blog.comments.concat({ content: comment })
-    }
-    console.log(updatedBlog)
 
     try {
-      await blogService.addComment(blog.id, comment)
-
-      dispatch(updateBlog(updatedBlog))
+      dispatch(addComment(blog, comment))
       e.target.comment.value = ""
     } catch (e) {
       const error = e.response.data.error
@@ -100,14 +80,11 @@ const Blog = () => {
         <div>author: {blog.author}</div>
         <div>url: {blog.url}</div>
         <div>
-          likes: {blog.likes}{" "}
-          <button onClick={() => updateLikes(blog)}>like</button>
+          likes: {blog.likes} <button onClick={updateLikes}>like</button>
         </div>
         <div>Posted by: {blog.user.username}</div>
         <div>Posted: {dayjs(blog.createdAt).fromNow()}</div>
-        {showDeleteButton() && (
-          <button onClick={() => removeBlog(blog)}>delete</button>
-        )}
+        {showDeleteButton() && <button onClick={removeBlog}>delete</button>}
         <h3>comments</h3>
         <form onSubmit={handleSubmit}>
           <input name="comment" placeholder="enter a comment" />

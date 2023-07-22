@@ -44,7 +44,7 @@ const addComment = async (id, comment) => {
   const response = await axios.post(
     `${baseUrl}/${id}/comments`,
     { content: comment },
-    config
+    config,
   )
   return response.data
 }
