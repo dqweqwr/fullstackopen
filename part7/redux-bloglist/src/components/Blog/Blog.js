@@ -5,7 +5,7 @@ import { useMatch } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
 import blogService from "../../services/blogs"
-import { updateBlog, deleteBlog } from "../../reducers/blogsReducer"
+import { updateBlog, deleteBlog, addComment } from "../../reducers/blogsReducer"
 import {
   showSuccessNotification,
   showErrorNotification,
@@ -14,10 +14,9 @@ import {
 const Blog = () => {
   const dispatch = useDispatch()
 
-
   const match = useMatch("/blogs/:id")
   const blog = useSelector((state) =>
-    state.blogs.find((blog) => blog.id === match.params.id)
+    state.blogs.find((blog) => blog.id === match.params.id),
   )
 
   if (!blog) return null
@@ -72,11 +71,31 @@ const Blog = () => {
     }
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const comment = e.target.comment.value
+    console.log(blog.id)
+    const updatedBlog = {
+      ...blog,
+      comments: blog.comments.concat({ content: comment })
+    }
+    console.log(updatedBlog)
+
+    try {
+      await blogService.addComment(blog.id, comment)
+
+      dispatch(updateBlog(updatedBlog))
+      e.target.comment.value = ""
+    } catch (e) {
+      const error = e.response.data.error
+
+      dispatch(showErrorNotification(error))
+    }
+  }
+
   return (
     <div>
-      <h1>
-        {blog.title}
-      </h1>
+      <h1>{blog.title}</h1>
       <>
         <div>author: {blog.author}</div>
         <div>url: {blog.url}</div>
@@ -89,6 +108,16 @@ const Blog = () => {
         {showDeleteButton() && (
           <button onClick={() => removeBlog(blog)}>delete</button>
         )}
+        <h3>comments</h3>
+        <form onSubmit={handleSubmit}>
+          <input name="comment" placeholder="enter a comment" />
+          <button type="submit">Add</button>
+        </form>
+        <ul>
+          {blog.comments.map((comment, index) => (
+            <li key={index}>{comment.content}</li>
+          ))}
+        </ul>
       </>
     </div>
   )
