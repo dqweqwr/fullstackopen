@@ -30,7 +30,7 @@ const Notification = () => {
 
   return (
     <div
-      className="p-3 rounded-lg mb-4 border-2"
+      className="p-3 rounded-lg border-2 absolute right-0 bottom-0 w-3/6 m-6"
       style={styling}
     >
       {message.value}

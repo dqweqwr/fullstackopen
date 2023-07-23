@@ -66,6 +66,7 @@ const Blog = () => {
     try {
       dispatch(addComment(blog, comment))
       e.target.comment.value = ""
+      dispatch(showSuccessNotification("Comment added"))
     } catch (e) {
       const error = e.response.data.error
 
@@ -79,20 +80,25 @@ const Blog = () => {
       <>
         <div>author: {blog.author}</div>
         <div>url: {blog.url}</div>
-        <div>
-          likes: {blog.likes} <button onClick={updateLikes}>like</button>
-        </div>
         <div>Posted by: {blog.user.username}</div>
         <div>Posted: {dayjs(blog.createdAt).fromNow()}</div>
-        {showDeleteButton() && <button onClick={removeBlog}>delete</button>}
+        <div>
+          likes: {blog.likes}
+        </div>
+        <button className="button" onClick={updateLikes}>like</button>
+        {showDeleteButton() && <button className="button" onClick={removeBlog}>delete</button>}
         <h3>comments</h3>
         <form onSubmit={handleSubmit}>
           <input name="comment" placeholder="enter a comment" />
-          <button type="submit">Add</button>
+          <button type="submit" className="button">Add</button>
         </form>
-        <ul>
+        <ul className="list-disc">
           {blog.comments.map((comment, index) => (
-            <li key={index}>{comment.content}</li>
+            <li
+              key={index}
+            >
+              {comment.content}
+            </li>
           ))}
         </ul>
       </>

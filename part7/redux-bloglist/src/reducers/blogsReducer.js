@@ -67,8 +67,8 @@ export const addComment = (blog, comment) => {
     comments: blog.comments.concat({ content: comment }),
   }
   return async (dispatch) => {
-    await blogService.addComment(blog, comment)
-    dispatch(updateBlog(updatedBlog))
+    await blogService.addComment(blog.id, comment)
+    dispatch(changeBlog(updatedBlog))
   }
 }
 
