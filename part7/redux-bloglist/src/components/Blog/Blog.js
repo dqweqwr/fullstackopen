@@ -74,8 +74,8 @@ const Blog = () => {
   }
 
   return (
-    <div>
-      <h1>{blog.title}</h1>
+    <div className="container font-medium">
+      <h1 className="text-3xl font-bold text-center">{blog.title}</h1>
       <>
         <div>author: {blog.author}</div>
         <div>url: {blog.url}</div>

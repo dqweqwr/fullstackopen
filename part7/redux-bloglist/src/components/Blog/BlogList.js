@@ -17,28 +17,45 @@ const BlogList = () => {
   }
 
   return (
-    <>
-      <div>
-        Sort by:{" "}
-        <button onClick={() => setSortByLikes(!sortByLikes)}>
-          {sortByLikes ? "most liked" : "oldest"}
-        </button>{" "}
-        on top
+    <div className="mt-6">
+      <div className="flex flex-row justify-between items-center ">
+        <h1 className="font-bold text-3xl mb-4">Blogs</h1>
+        <div className="font-bold text-sm">
+          sort by:
+          {" "}
+          <button
+            onClick={() => setSortByLikes(!sortByLikes)}
+            className="button px-2 py-1 rounded-lg font-semibold bg-cyan-50 text-black hover:text-white border-cyan-50"
+          >
+            {sortByLikes ? "most liked" : "oldest"}
+          </button>{" "}
+        </div>
       </div>
       <div>
         {blogs.map((blog) => (
-          <div key={blog.id} className="flex flex-col">
-            <Link className="link font-bold"
+          <div
+            key={blog.id}
+            className="mb-1 px-5 py-2 bg-gray-50 border rounded-lg blog-item-shadow hover:bg-cyan-100 duration-300"
+          >
+            <Link
+              className="link font-bold"
               to={`/blogs/${blog.id}`}
             >
               {blog.title}
             </Link>
-            <div>Likes: {blog.likes}</div>
-            <div>Posted: {dayjs(blog.createdAt).fromNow()}</div>
+            <div
+              className="font-thin text-xxs text-gray-600"
+            >
+              <div>
+                Likes: {blog.likes}
+                {" "}|{" "}
+                Posted: {dayjs(blog.createdAt).fromNow()} by {blog.user.username}
+              </div>
+            </div>
           </div>
         ))}
       </div>
-    </>
+    </div>
   )
 }
 

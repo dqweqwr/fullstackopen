@@ -10,12 +10,9 @@ const Menu = () => {
   return (
     <div className="p-3 py-5 shadow-md bg-gray-100">
       <div className="flex flex-row justify-between limit-size">
-        <div className="flex flex-row items-center gap-10">
-          <h1 className="text-3xl font-extrabold">Blogs</h1>
-          <div className="flex flex-row gap-6 items-center">
-            <Link className="link" to="/">Blogs</Link>
-            <Link className="link" to="/users">Users</Link>
-          </div>
+        <div className="flex flex-row gap-6 items-center">
+          <Link className="link font-bold" to="/">Blogs</Link>
+          <Link className="link font-bold" to="/users">Users</Link>
         </div>
         <div className="flex flex-row gap-5 items-center">
           <div>
@@ -29,7 +26,7 @@ const Menu = () => {
             </div>
           </div>
           <button
-            className="button text-white bg-purple-800 hover:bg-pink-500 duration-300"
+            className="button font-bold"
             onClick={() => dispatch(handleLogout())}
           >
             Log out

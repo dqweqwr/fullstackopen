@@ -17,7 +17,7 @@ const Togglable = (props) => {
         style={hideWhenVisible}
       >
         <button
-          className="button bg-green-500 font-bold text-white"
+          className="button font-bold"
           onClick={toggleVisibility}
         >
           {buttonLabel}
