@@ -3,40 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: "Roboto", sans-serif;
-  padding: 24px;
-}
+@layer components {
+  #root {
+    @apply min-h-screen bg-cyan-50
+  }
 
-#root {
-  max-width: 1000px;
-  margin: 0 auto;
-}
+  .limit-size {
+    @apply max-w-6xl mx-auto
+  }
 
-.error,
-.success {
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
+  .link {
+    @apply text-lg hover:text-purple-500 duration-300
+  }
 
-.error {
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 2px solid #f5c6cb;
-}
+  .button {
+    @apply border rounded-3xl px-6 py-2 font-medium
+  }
 
-.success {
-  color: #155724;
-  background-color: #d4edda;
-  border: 2px solid #c3e6cb;
-}
-
-.blog-listing {
-  border: 1px solid #000;
-  margin: 8px 0px;
-  padding: 8px;
-  border-radius: 8px;
+  .container {
+    @apply p-6 min-w-full
+  }
 }
 
 .users-table {
@@ -51,7 +37,3 @@ th {
   padding: 12px;
 }
 
-a {
-  padding: 0px 5px;
-  text-decoration: none;
-}

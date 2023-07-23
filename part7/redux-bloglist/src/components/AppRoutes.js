@@ -29,10 +29,10 @@ const AppRoutes = () => {
         <Route
           path="/"
           element={
-            <>
+            <div className="container">
               <BlogForm />
               <BlogList />
-            </>
+            </div>
           }
         />
         <Route path="/users" element={<Users />} />

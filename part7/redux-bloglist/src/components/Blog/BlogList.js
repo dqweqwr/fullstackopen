@@ -25,11 +25,16 @@ const BlogList = () => {
         </button>{" "}
         on top
       </div>
-      <div className="list-of-blogs">
+      <div>
         {blogs.map((blog) => (
-          <div key={blog.id} className="blog-listing">
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> Likes:{" "}
-            {blog.likes} Posted: {dayjs(blog.createdAt).fromNow()}
+          <div key={blog.id} className="flex flex-col">
+            <Link className="link font-bold"
+              to={`/blogs/${blog.id}`}
+            >
+              {blog.title}
+            </Link>
+            <div>Likes: {blog.likes}</div>
+            <div>Posted: {dayjs(blog.createdAt).fromNow()}</div>
           </div>
         ))}
       </div>
