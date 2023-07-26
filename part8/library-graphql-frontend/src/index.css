@@ -2,3 +2,14 @@
   padding: 0 5px;
   text-decoration: none;
 }
+
+.table th {
+  padding: 8px 0;
+  text-align: left;
+}
+
+.table td,
+.table th {
+  border: 1px solid #818080;
+  padding: 8px;
+}

@@ -9,7 +9,7 @@ const Authors = () => {
   return (
     <>
       <h2>Authors</h2>
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>name</th>
