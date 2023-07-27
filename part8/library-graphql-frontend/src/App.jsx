@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"
-import Authors from "./components/Authors"
-import Books from "./components/Books"
+import Authors from "./components/Authors/Authors"
+import Books from "./components/Books/Books"
 
 const App = () => {
   return (
