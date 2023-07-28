@@ -6,6 +6,7 @@ const Book = require("./models/book")
 const Author = require("./models/author")
 const config = require("./utils/config")
 const mongoose = require("mongoose")
+const { GraphQLError } = require("graphql")
 
 console.log(`Connecting to ${config.MONGODB_URI}`)
 mongoose
@@ -79,11 +80,31 @@ const resolvers = {
       const authors = await Author.find({})
       if (!authors.find((a) => a.name === args.author)) {
         const author = new Author({ name: args.author })
-        await author.save()
+        try {
+          await author.save()
+        } catch (error) {
+          throw new GraphQLError("Saving author failed", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.name,
+              error,
+            },
+          })
+        }
       }
       const bookAuthor = await Author.findOne({ name: args.author })
       const book = new Book({ ...args, author: bookAuthor._id })
-      await book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError("Saving book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+            error,
+          },
+        })
+      }
       return book.populate("author")
     },
   },
