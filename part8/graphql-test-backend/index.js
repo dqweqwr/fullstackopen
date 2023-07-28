@@ -71,7 +71,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    personCount: async () => Person.collection.countDocuments,
+    personCount: async () => Person.collection.countDocuments(),
     allPersons: async (root, args) => {
       if (!args.phone) {
         return Person.find({})
@@ -108,12 +108,12 @@ const resolvers = {
         await person.save()
         currentUser.friends = currentUser.friends.concat(person)
         await currentUser.save()
-      } catch (e) {
+      } catch (error) {
         throw new GraphQLError("Saving person failed", {
           extensions: {
             code: "BAD_USER_INPUT",
             invalidArgs: args.name,
-            e,
+            error,
           },
         })
       }
@@ -126,12 +126,12 @@ const resolvers = {
 
       try {
         await person.save()
-      } catch (e) {
+      } catch (error) {
         throw new GraphQLError("Saving number failed", {
           extensions: {
             code: "BAD_USER_INPUT",
             invalidArgs: args.name,
-            e,
+            error,
           },
         })
       }
@@ -141,12 +141,12 @@ const resolvers = {
     createUser: async (root, args) => {
       const user = new User({ username: args.username })
 
-      return user.save().catch((e) => {
+      return user.save().catch((error) => {
         throw new GraphQLError("Creating the user failed", {
           extensions: {
             code: "BAD_USER_INPUT",
             invalidArgs: args.name,
-            e,
+            error,
           },
         })
       })
