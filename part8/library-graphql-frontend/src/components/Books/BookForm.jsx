@@ -5,9 +5,10 @@ import {
   ALL_BOOKS,
   ALL_AUTHORS,
   FILTERED_BOOKS,
+  ALL_GENRES,
 } from "../../queries"
 
-const BookForm = ({ filter }) => {
+const BookForm = () => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [published, setPublished] = useState("")
@@ -21,28 +22,31 @@ const BookForm = ({ filter }) => {
   const genreId = useId()
 
   const [addBook] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_GENRES }],
     update: (cache, response) => {
       cache.updateQuery({ query: ALL_BOOKS }, (data) => {
-        if (!data) return
-        return {
-          allBooks: data.allBooks.concat(response.data.addBook),
-        }
+        if (!data) return undefined
+
+        const cachedBooks = data.allBooks
+        const newBook = response.data.addBook
+        return { allBooks: cachedBooks.concat(newBook) }
       })
+
       const genres = response.data.addBook.genres
-      genres.forEach((genre) => {
-        cache.updateQuery(
-          {
-            query: FILTERED_BOOKS,
-            variables: { genre },
-          },
-          (data) => {
-            if (!data) return
-            return {
-              allBooks: data.allBooks.concat(response.data.addBook),
+      if (genres) {
+        genres.forEach((genre) => {
+          cache.updateQuery(
+            { query: FILTERED_BOOKS, variables: { genre } },
+            (data) => {
+              if (!data) return undefined
+
+              const cachedBooks = data.allBooks
+              const newBook = response.data.addBook
+              return { allBooks: cachedBooks.concat(newBook) }
             }
-          }
-        )
-      })
+          )
+        })
+      }
     },
   })
 
