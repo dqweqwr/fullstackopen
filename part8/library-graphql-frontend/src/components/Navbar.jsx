@@ -12,6 +12,9 @@ const Navbar = ({ logout }) => {
       <Link className="link" to="/books">
         Books
       </Link>
+      <Link className="link" to="/recommendations">
+        Recommendations
+      </Link>
       {localStorage.getItem("library-graphql-token") && (
         <button onClick={logout}>Logout</button>
       )}

@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar"
 import Home from "./components/Home"
 import Authors from "./components/Authors/Authors"
 import Books from "./components/Books/Books"
+import Recommendations from "./components/Books/Recommendations"
 import { useApolloClient } from "@apollo/client"
 
 const App = () => {
@@ -23,6 +24,10 @@ const App = () => {
         <Route path="/" element={<Home setToken={setToken} />} />
         <Route path="/authors" element={<Authors />} />
         <Route path="/books" element={<Books />} />
+        <Route
+          path="/recommendations"
+          element={<Recommendations />}
+        />
       </Routes>
     </>
   )

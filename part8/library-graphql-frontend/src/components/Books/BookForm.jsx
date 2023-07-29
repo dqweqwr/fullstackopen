@@ -8,6 +8,7 @@ const BookForm = () => {
   const [published, setPublished] = useState("")
   const [genre, setGenre] = useState("")
   const [genres, setGenres] = useState([])
+  const [showForm, setShowForm] = useState(false)
 
   const titleId = useId()
   const authorId = useId()
@@ -35,8 +36,17 @@ const BookForm = () => {
     setGenres([])
   }
 
+  if (!showForm) {
+    return (
+      <button onClick={() => setShowForm(!showForm)}>
+        Add new book
+      </button>
+    )
+  }
+
   return (
     <>
+      <button onClick={() => setShowForm(!showForm)}>Cancel</button>
       <form onSubmit={handleSubmit}>
         <h3>Add book</h3>
         <div>
