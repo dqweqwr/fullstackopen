@@ -44,13 +44,10 @@ const typeDefs = gql`
 
   type Query {
     bookCount: Int!
-
     authorCount: Int!
-
     allBooks(author: String, genre: String): [Book!]!
-
     allAuthors: [Author!]!
-
+    allGenres: [String!]!
     me: User
   }
 
@@ -61,11 +58,8 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ): Book
-
     editAuthor(name: String!, setBornTo: Int!): Author
-
     createUser(username: String!, favoriteGenre: String!): User
-
     login(username: String!, password: String!): Token
   }
 `
@@ -87,6 +81,11 @@ const resolvers = {
       return books
     },
     allAuthors: async () => Author.find({}),
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = books.map((book) => book.genres)
+      return [...new Set(genres.flat(1))] // flattens array then removes duplicate genres
+    },
     me: (root, args, { currentUser }) => currentUser,
   },
   Mutation: {
