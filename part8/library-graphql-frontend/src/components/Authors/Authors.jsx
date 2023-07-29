@@ -11,7 +11,11 @@ const Authors = () => {
   return (
     <>
       <h2>Authors</h2>
-      <SetBirthyearForm authors={result.data.allAuthors} />
+      {localStorage.getItem("library-graphql-token") ? (
+        <SetBirthyearForm authors={result.data.allAuthors} />
+      ) : (
+        <div>Login to edit authors</div>
+      )}
       <AuthorsTable authors={result.data.allAuthors} />
     </>
   )

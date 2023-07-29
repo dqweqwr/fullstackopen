@@ -11,7 +11,11 @@ const Books = () => {
   return (
     <>
       <h2>Books</h2>
-      <BookForm />
+      {localStorage.getItem("library-graphql-token") ? (
+        <BookForm />
+      ) : (
+        <div>Login to add books</div>
+      )}
       <BooksTable books={result.data.allBooks} />
     </>
   )

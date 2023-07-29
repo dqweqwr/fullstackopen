@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const Navbar = () => {
+const Navbar = ({ logout }) => {
   return (
     <>
       <Link className="link" to="/">
@@ -12,6 +12,9 @@ const Navbar = () => {
       <Link className="link" to="/books">
         Books
       </Link>
+      {localStorage.getItem("library-graphql-token") && (
+        <button onClick={logout}>Logout</button>
+      )}
     </>
   )
 }
