@@ -12,7 +12,7 @@ const Books = () => {
       <BooksFilter setFilter={setFilter} />
       {localStorage.getItem("library-graphql-token") ? (
         <>
-          <BookForm />
+          <BookForm filter={filter} />
         </>
       ) : (
         <div>Login to add books</div>
