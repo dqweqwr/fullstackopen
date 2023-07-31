@@ -27,10 +27,7 @@ const SetBirthyearForm = ({ authors }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor={nameId}>name: </label>
-          <select
-            onChange={({ target }) => setName(target.value)}
-            id="nameId"
-          >
+          <select onChange={({ target }) => setName(target.value)} id="nameId">
             {authors.map((author) => {
               return (
                 <option key={author.id} value={author.name}>

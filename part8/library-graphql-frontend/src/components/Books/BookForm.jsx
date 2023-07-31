@@ -24,14 +24,6 @@ const BookForm = () => {
   const [addBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_GENRES }],
     update: (cache, response) => {
-      cache.updateQuery({ query: ALL_BOOKS }, (data) => {
-        if (!data) return undefined
-
-        const cachedBooks = data.allBooks
-        const newBook = response.data.addBook
-        return { allBooks: cachedBooks.concat(newBook) }
-      })
-
       const genres = response.data.addBook.genres
       if (genres) {
         genres.forEach((genre) => {
@@ -68,11 +60,7 @@ const BookForm = () => {
   }
 
   if (!showForm) {
-    return (
-      <button onClick={() => setShowForm(!showForm)}>
-        Add new book
-      </button>
-    )
+    return <button onClick={() => setShowForm(!showForm)}>Add new book</button>
   }
 
   return (
@@ -102,9 +90,7 @@ const BookForm = () => {
             id={publishedId}
             type="number"
             value={published}
-            onChange={({ target }) =>
-              setPublished(Number(target.value))
-            }
+            onChange={({ target }) => setPublished(Number(target.value))}
           />
         </div>
         <div>
@@ -117,9 +103,7 @@ const BookForm = () => {
           <button type="button" onClick={addGenre}>
             Add genre
           </button>
-          <div>
-            Genres: {genres.length > 1 ? genres.join(", ") : genres}
-          </div>
+          <div>Genres: {genres.length > 1 ? genres.join(", ") : genres}</div>
           <button type="button" onClick={() => setGenres([])}>
             Clear genres
           </button>
