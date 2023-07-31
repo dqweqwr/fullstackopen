@@ -1,14 +1,14 @@
-const { ApolloServer } = require("@apollo/server")
-const { expressMiddleware } = require("@apollo/server/express4")
+const {ApolloServer} = require("@apollo/server")
+const {expressMiddleware} = require("@apollo/server/express4")
 const {
   ApolloServerPluginDrainHttpServer,
 } = require("@apollo/server/plugin/drainHttpServer")
-const { makeExecutableSchema } = require("@graphql-tools/schema")
+const {makeExecutableSchema} = require("@graphql-tools/schema")
 const express = require("express")
 const cors = require("cors")
 const http = require("http")
-const { WebSocketServer } = require("ws")
-const { useServer } = require("graphql-ws/lib/use/ws")
+const {WebSocketServer} = require("ws")
+const {useServer} = require("graphql-ws/lib/use/ws")
 
 const config = require("./utils/config")
 const User = require("./models/user")
@@ -36,13 +36,13 @@ const start = async () => {
     path: "/",
   })
 
-  const schema = makeExecutableSchema({ typeDefs, resolvers })
-  const serverCleanup = useServer({ schema }, wsServer)
+  const schema = makeExecutableSchema({typeDefs, resolvers})
+  const serverCleanup = useServer({schema}, wsServer)
 
   const server = new ApolloServer({
     schema,
     plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginDrainHttpServer({httpServer}),
       {
         async serverWillStart() {
           return {
@@ -62,7 +62,7 @@ const start = async () => {
     cors(),
     express.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => {
+      context: async ({req}) => {
         const auth = req ? req.headers.authorization : null
         if (auth && auth.startsWith("Bearer ")) {
           const encryptedToken = auth.replace("Bearer ", "")
@@ -70,7 +70,7 @@ const start = async () => {
           const currentUser = await User.findById(decodedToken.id).populate(
             "friends"
           )
-          return { currentUser }
+          return {currentUser}
         }
       },
     })
