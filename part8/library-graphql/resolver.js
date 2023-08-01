@@ -52,9 +52,9 @@ const resolvers = {
         })
       }
 
-      const authors = await Author.find({})
-      if (!authors.find((a) => a.name === args.author)) {
-        const author = new Author({ name: args.author })
+      let author = await Author.findOne({ name: args.author })
+      if (!author) {
+        author = new Author({ name: args.author, bookCount: 0 })
         try {
           await author.save()
         } catch (error) {
@@ -67,10 +67,14 @@ const resolvers = {
           })
         }
       }
-      const bookAuthor = await Author.findOne({ name: args.author })
-      const book = new Book({ ...args, author: bookAuthor._id })
+      const book = new Book({ ...args, author: author._id })
       try {
         await book.save()
+        await Author.findOneAndUpdate(
+          { name: args.author },
+          { bookCount: author.bookCount + 1 },
+          { new: true }
+        )
       } catch (error) {
         throw new GraphQLError("Saving book failed", {
           extensions: {
@@ -116,12 +120,6 @@ const resolvers = {
       }
 
       return { value: jwt.sign(tokenParams, config.JWT_SECRET) }
-    },
-  },
-  Author: {
-    bookCount: async (root) => {
-      const books = await Book.find({ author: root._id })
-      return books.length
     },
   },
   Subscription: {

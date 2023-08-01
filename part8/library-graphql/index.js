@@ -24,6 +24,14 @@ mongoose
   .then(() => console.log("Successfully connected"))
   .catch((err) => console.log("Connection failed:", err.message))
 
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  console.log(
+    `DB call: ${collectionName}.${method}`,
+    JSON.stringify(query),
+    doc
+  )
+})
+
 const start = async () => {
   const app = express()
   const httpServer = http.createServer(app)
