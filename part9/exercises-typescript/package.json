@@ -1,11 +1,11 @@
 {
-  "name": "typescript-test",
+  "name": "exercises-typescript",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "multiply": "ts-node multiplicator.ts",
-    "calculate": "ts-node calculator.ts",
+    "calculateBmi": "ts-node bmiCalculator.ts",
+    "calculateExercises": "ts-node exerciseCalculator.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts"
   },
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/node": "^20.4.5",
+    "@types/qs": "^6.9.7",
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
