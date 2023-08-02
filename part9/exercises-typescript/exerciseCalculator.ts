@@ -1,6 +1,6 @@
-import { isNotNumber } from "./utils";
+// import { isNotNumber } from "./utils";
 
-interface Result {
+export interface Result {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -10,32 +10,32 @@ interface Result {
   average: number;
 }
 
-interface exerciseValues {
-  exerciseHours: number[];
-  target: number;
-}
+// interface exerciseValues {
+//   exerciseHours: number[];
+//   target: number;
+// }
 
-const parseArguments = (args: string[]): exerciseValues => {
-  if (args.length < 2) throw new Error("not enough input");
-
-  const [targetStr, ...exerciseHoursStr]: string[] = args;
-
-  if (isNotNumber(targetStr)) throw new Error("input must be numbers");
-  exerciseHoursStr.map((hourStr) => {
-    if (isNotNumber(hourStr)) throw new Error("input must be numbers");
-  });
-
-  const exerciseHours: number[] = exerciseHoursStr.map((hour) => Number(hour));
-  const target: number = Number(targetStr);
-
-  return {
-    exerciseHours,
-    target,
-  };
-};
+// const parseArguments = (args: string[]): exerciseValues => {
+//   if (args.length < 2) throw new Error("not enough input");
+//
+//   const [targetStr, ...exerciseHoursStr]: string[] = args;
+//
+//   if (isNotNumber(targetStr)) throw new Error("input must be numbers");
+//   exerciseHoursStr.map((hourStr) => {
+//     if (isNotNumber(hourStr)) throw new Error("input must be numbers");
+//   });
+//
+//   const exerciseHours: number[] = exerciseHoursStr.map((hour) => Number(hour));
+//   const target: number = Number(targetStr);
+//
+//   return {
+//     exerciseHours,
+//     target,
+//   };
+// };
 
 // all time in hours
-const calculateExercises = (
+export const calculateExercises = (
   target: number,
   exerciseHours: number[],
 ): Result => {
@@ -57,7 +57,7 @@ const calculateExercises = (
   if (success) {
     rating = 3;
     ratingDescription = "Excellent work";
-  } else if (average / target > 0.9) {
+  } else if (average / target > 0.8) {
     rating = 2;
     ratingDescription = "Not too bad but could be better";
   } else {
@@ -76,10 +76,10 @@ const calculateExercises = (
   };
 };
 
-const args: string[] = process.argv.slice(2);
-try {
-  const { target, exerciseHours } = parseArguments(args);
-  console.log(calculateExercises(target, exerciseHours));
-} catch (e) {
-  console.log(e.message);
-}
+// const args: string[] = process.argv.slice(2);
+// try {
+//   const { target, exerciseHours } = parseArguments(args);
+//   console.log(calculateExercises(target, exerciseHours));
+// } catch (e) {
+//   console.log(e.message);
+// }
