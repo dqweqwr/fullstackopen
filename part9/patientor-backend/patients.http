@@ -1,0 +1,33 @@
+### works
+POST localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "bob",
+  "dateOfBirth": "2000-10-10",
+  "ssn": "1234-1234",
+  "gender": "male",
+  "occupation": "engineer"
+}
+### works
+POST localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "amy",
+  "dateOfBirth": "1990-10-10",
+  "ssn": "234234234",
+  "gender": "female",
+  "occupation": "officer"
+}
+### should fail
+POST localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "john",
+  "dateOfBirth": 5,
+  "ssn": "5555555",
+  "gender": "asdfasdf",
+  "occupation": "idk"
+}
