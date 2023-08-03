@@ -20,13 +20,6 @@ router.post("/", (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
-  // const { date, weather, visibility, comment } = req.body;
-  // const addedEntry = diaryService.addDiary({
-  //   date,
-  //   weather,
-  //   visibility,
-  //   comment,
-  // });
 });
 
 router.get("/:id", (req, res) => {
