@@ -1,0 +1,12 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "content": "first note"
+    },
+    {
+      "content": "asdfsdf",
+      "id": 2
+    }
+  ]
+}
