@@ -1,5 +1,6 @@
 import { DiaryEntry } from "../types";
 import { createEntry } from "../diaryEntryServices";
+import { useEffect, useState } from "react";
 
 const DiaryEntryForm = ({
   entries,
@@ -8,55 +9,130 @@ const DiaryEntryForm = ({
   entries: DiaryEntry[];
   setEntries: React.Dispatch<DiaryEntry[]>;
 }) => {
+  const [date, setDate] = useState("");
+  const [visibility, setVisibility] = useState("great");
+  const [weather, setWeather] = useState("sunny");
+  const [comment, setComment] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (errorMessage !== "") {
+      const timer = setTimeout(() => setErrorMessage(""), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
   const diaryEntryCreation = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const target = event.target as typeof event.target & {
-      date: { value: string };
-      visibility: { value: string };
-      weather: { value: string };
-      comment: { value: string };
-    };
-
     const newEntry = {
-      date: target.date.value,
-      visibility: target.visibility.value,
-      weather: target.weather.value,
-      comment: target.comment.value,
+      date,
+      visibility,
+      weather,
+      comment,
     };
 
     createEntry(newEntry)
       .then((data) => {
         setEntries(entries.concat(data));
-        target.date.value = "";
-        target.visibility.value = "";
-        target.weather.value = "";
-        target.comment.value = "";
+        setDate("");
+        setComment("");
       })
       .catch((error) => {
-        console.log(error.response.data);
+        setErrorMessage(error.response.data);
       });
   };
 
   return (
     <>
       <h3>Add new entry</h3>
+      <div style={{ color: "red" }}>{errorMessage}</div>
       <form onSubmit={diaryEntryCreation}>
         <div>
           <label htmlFor="date">date: </label>
-          <input id="date" name="date" />
+          <input
+            id="date"
+            type="date"
+            value={date}
+            onChange={({ target }) => setDate(target.value)}
+          />
         </div>
         <div>
-          <label htmlFor="visibility">visibility: </label>
-          <input id="visibility" name="visibility" />
+          visibility: great
+          <input
+            type="radio"
+            name="visibility"
+            value="great"
+            onChange={({ target }) => setVisibility(target.value)}
+            defaultChecked={true}
+          />
+          good
+          <input
+            type="radio"
+            name="visibility"
+            value="good"
+            onChange={({ target }) => setVisibility(target.value)}
+          />
+          ok
+          <input
+            type="radio"
+            name="visibility"
+            value="ok"
+            onChange={({ target }) => setVisibility(target.value)}
+          />
+          poor
+          <input
+            type="radio"
+            name="visibility"
+            value="poor"
+            onChange={({ target }) => setVisibility(target.value)}
+          />
         </div>
         <div>
-          <label htmlFor="weather">weather: </label>
-          <input id="weather" name="weather" />
+          weather: sunny
+          <input
+            type="radio"
+            name="weather"
+            value="sunny"
+            onChange={({ target }) => setWeather(target.value)}
+            defaultChecked={true}
+          />
+          rainy
+          <input
+            type="radio"
+            name="weather"
+            value="rainy"
+            onChange={({ target }) => setWeather(target.value)}
+          />
+          cloudy
+          <input
+            type="radio"
+            name="weather"
+            value="cloudy"
+            onChange={({ target }) => setWeather(target.value)}
+          />
+          stormy
+          <input
+            type="radio"
+            name="weather"
+            value="stormy"
+            onChange={({ target }) => setWeather(target.value)}
+          />
+          windy
+          <input
+            type="radio"
+            name="weather"
+            value="windy"
+            onChange={({ target }) => setWeather(target.value)}
+          />
         </div>
         <div>
           <label htmlFor="comment">comment: </label>
-          <input id="comment" name="comment" />
+          <input
+            id="comment"
+            value={comment}
+            onChange={({ target }) => setComment(target.value)}
+          />
         </div>
         <button type="submit">add</button>
       </form>

@@ -1,7 +1,6 @@
 import { DiaryEntry } from "../types";
 
 const DiaryEntriesList = ({ entries }: { entries: DiaryEntry[] }) => {
-  console.log(entries);
   if (entries.length === 0) return;
 
   return (
