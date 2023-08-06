@@ -1,0 +1,21 @@
+POST http://localhost:3000/todos
+content-type: application/json
+
+{
+  "text": "testingtesting123",
+  "done": false
+}
+
+###
+
+DELETE http://localhost:3000/todos/64cedce37293bd7cd5b4e4fd
+
+###
+
+PUT http://localhost:3000/todos/64cee3efc6c9f915e71da174
+content-type: application/json
+
+{
+  "text": "testingtesting123",
+  "done": false
+}
